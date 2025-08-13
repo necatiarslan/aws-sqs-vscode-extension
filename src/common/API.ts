@@ -8,7 +8,7 @@ import { sep } from "path";
 import { join, basename, extname, dirname } from "path";
 import { parseKnownFiles, SourceProfileInit } from "../aws-sdk/parseKnownFiles";
 import { ParsedIniData } from "@aws-sdk/types";
-import * as SnsTreeView from '../sqs/SqsTreeView';
+import * as SqsTreeView from '../sqs/SqsTreeView';
 import * as fs from 'fs';
 import * as archiver from 'archiver';
 
@@ -16,8 +16,8 @@ export async function GetCredentials() {
   let credentials;
 
   try {
-    if (SnsTreeView.SqsTreeView.Current) {
-      process.env.AWS_PROFILE = SnsTreeView.SqsTreeView.Current.AwsProfile ;
+    if (SqsTreeView.SqsTreeView.Current) {
+      process.env.AWS_PROFILE = SqsTreeView.SqsTreeView.Current.AwsProfile ;
     }
     // Get credentials using the default provider chain.
     const provider = fromNodeProviderChain({ignoreCache: true});
@@ -39,13 +39,13 @@ export async function GetCredentials() {
 async function GetSQSClient(region: string) {
   const credentials = await GetCredentials();
   
-  const sns = new SQSClient({
+  const sqs = new SQSClient({
     region,
     credentials,
-    endpoint: SnsTreeView.SqsTreeView.Current?.AwsEndPoint,
+    endpoint: SqsTreeView.SqsTreeView.Current?.AwsEndPoint,
   });
   
-  return sns;
+  return sqs;
 }
 
 export async function GetSqsQueueList(
@@ -96,8 +96,8 @@ export async function GetSqsQueueList(
   } catch (error: any) {
     result.isSuccessful = false;
     result.error = error;
-    ui.showErrorMessage("api.GetSnsTopicList Error !!!", error);
-    ui.logToOutput("api.GetSnsTopicList Error !!!", error);
+    ui.showErrorMessage("api.GetSqsTopicList Error !!!", error);
+    ui.logToOutput("api.GetSqsTopicList Error !!!", error);
     return result;
   }
 }
@@ -234,7 +234,7 @@ async function GetSTSClient(region: string) {
     {
       region,
       credentials,
-      endpoint: SnsTreeView.SqsTreeView.Current?.AwsEndPoint,
+      endpoint: SqsTreeView.SqsTreeView.Current?.AwsEndPoint,
     }
   );
   return iamClient;

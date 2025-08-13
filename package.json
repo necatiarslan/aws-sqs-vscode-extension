@@ -25,193 +25,193 @@
   "contributes": {
     "commands": [
       {
-        "command": "SnsTreeView.Refresh",
+        "command": "SqsTreeView.Refresh",
         "title": "Refresh",
         "icon": "$(refresh)"
       },
       {
-        "command": "SnsTreeView.Filter",
+        "command": "SqsTreeView.Filter",
         "title": "Filter",
         "icon": "$(filter)"
       },
       {
-        "command": "SnsTreeView.ShowOnlyFavorite",
+        "command": "SqsTreeView.ShowOnlyFavorite",
         "title": "Show Only Favorite",
         "icon": "$(bookmark)"
       },
       {
-        "command": "SnsTreeView.ShowHiddenNodes",
+        "command": "SqsTreeView.ShowHiddenNodes",
         "title": "Show Hidden Nodes",
         "icon": "$(eye-closed)"
       },
       {
-        "command": "SnsTreeView.AddToFav",
+        "command": "SqsTreeView.AddToFav",
         "title": "Fav"
       },
       {
-        "command": "SnsTreeView.DeleteFromFav",
+        "command": "SqsTreeView.DeleteFromFav",
         "title": "UnFav"
       },
       {
-        "command": "SnsTreeView.HideNode",
+        "command": "SqsTreeView.HideNode",
         "title": "Hide"
       },
       {
-        "command": "SnsTreeView.UnHideNode",
+        "command": "SqsTreeView.UnHideNode",
         "title": "UnHide"
       },
       {
-        "command": "SnsTreeView.AddTopic",
+        "command": "SqsTreeView.AddTopic",
         "title": "Add Queue",
         "icon": "$(add)"
       },
       {
-        "command": "SnsTreeView.RemoveTopic",
+        "command": "SqsTreeView.RemoveTopic",
         "title": "Remove Queue"
       },
       {
-        "command": "SnsTreeView.Goto",
+        "command": "SqsTreeView.Goto",
         "title": "Goto Aws Console"
       },
       {
-        "command": "SnsTreeView.SelectAwsProfile",
+        "command": "SqsTreeView.SelectAwsProfile",
         "title": "Select Aws Profile",
         "icon": "$(account)"
       },
       {
-        "command": "SnsTreeView.SendMessage",
+        "command": "SqsTreeView.SendMessage",
         "title": "Send Message",
         "icon": "$(send)"
       },
       {
-        "command": "SnsTreeView.SnsView",
+        "command": "SqsTreeView.SqsView",
         "title": "Sqs View",
         "icon": "$(preview)"
       },
       {
-        "command": "SnsTreeView.AddMessageFilePath",
+        "command": "SqsTreeView.AddMessageFilePath",
         "title": "Add Message File",
         "icon": "$(add)"
       },
       {
-        "command": "SnsTreeView.RemoveMessageFilePath",
+        "command": "SqsTreeView.RemoveMessageFilePath",
         "title": "Remove Message File",
         "icon": "$(trash)"
       },
       {
-        "command": "SnsTreeView.TestAwsConnection",
+        "command": "SqsTreeView.TestAwsConnection",
         "title": "Test Aws Connection"
       },
       {
-        "command": "SnsTreeView.UpdateAwsEndPoint",
+        "command": "SqsTreeView.UpdateAwsEndPoint",
         "title": "Update Aws EndPoint"
       },
       {
-        "command": "SnsTreeView.Donate",
+        "command": "SqsTreeView.Donate",
         "title": "Donate"
       },
       {
-        "command": "SnsTreeView.BugAndNewFeature",
+        "command": "SqsTreeView.BugAndNewFeature",
         "title": "Bug and New Feature"
       }
     ],
     "menus": {
       "view/title": [
         {
-          "command": "SnsTreeView.ShowOnlyFavorite",
-          "when": "view == SnsTreeView",
+          "command": "SqsTreeView.ShowOnlyFavorite",
+          "when": "view == SqsTreeView",
           "group": "navigation@1"
         },
         {
-          "command": "SnsTreeView.ShowHiddenNodes",
-          "when": "view == SnsTreeView",
+          "command": "SqsTreeView.ShowHiddenNodes",
+          "when": "view == SqsTreeView",
           "group": "navigation@2"
         },
         {
-          "command": "SnsTreeView.Filter",
-          "when": "view == SnsTreeView",
+          "command": "SqsTreeView.Filter",
+          "when": "view == SqsTreeView",
           "group": "navigation@3"
         },
         {
-          "command": "SnsTreeView.AddTopic",
-          "when": "view == SnsTreeView",
+          "command": "SqsTreeView.AddTopic",
+          "when": "view == SqsTreeView",
           "group": "navigation@4"
         },
         {
-          "command": "SnsTreeView.SelectAwsProfile",
-          "when": "view == SnsTreeView",
+          "command": "SqsTreeView.SelectAwsProfile",
+          "when": "view == SqsTreeView",
           "group": "navigation@6"
         },
         {
-          "command": "SnsTreeView.Refresh",
-          "when": "view == SnsTreeView",
+          "command": "SqsTreeView.Refresh",
+          "when": "view == SqsTreeView",
           "group": "navigation@7"
         },
         {
-          "command": "SnsTreeView.TestAwsConnection",
-          "when": "view == SnsTreeView",
+          "command": "SqsTreeView.TestAwsConnection",
+          "when": "view == SqsTreeView",
           "group": "other"
         },
         {
-          "command": "SnsTreeView.UpdateAwsEndPoint",
-          "when": "view == SnsTreeView",
+          "command": "SqsTreeView.UpdateAwsEndPoint",
+          "when": "view == SqsTreeView",
           "group": "other"
         },
         {
-          "command": "SnsTreeView.Donate",
-          "when": "view == SnsTreeView",
+          "command": "SqsTreeView.Donate",
+          "when": "view == SqsTreeView",
           "group": "other"
         },
         {
-          "command": "SnsTreeView.BugAndNewFeature",
-          "when": "view == SnsTreeView",
+          "command": "SqsTreeView.BugAndNewFeature",
+          "when": "view == SqsTreeView",
           "group": "other"
         }
       ],
       "view/item/context": [
         {
-          "command": "SnsTreeView.AddToFav",
-          "when": "view == SnsTreeView && viewItem == Queue",
+          "command": "SqsTreeView.AddToFav",
+          "when": "view == SqsTreeView && viewItem == Queue",
           "group": "Filter"
         },
         {
-          "command": "SnsTreeView.DeleteFromFav",
-          "when": "view == SnsTreeView && viewItem == Queue",
+          "command": "SqsTreeView.DeleteFromFav",
+          "when": "view == SqsTreeView && viewItem == Queue",
           "group": "Filter"
         },
         {
-          "command": "SnsTreeView.HideNode",
-          "when": "view == SnsTreeView && viewItem == Queue",
+          "command": "SqsTreeView.HideNode",
+          "when": "view == SqsTreeView && viewItem == Queue",
           "group": "Filter"
         },
         {
-          "command": "SnsTreeView.UnHideNode",
-          "when": "view == SnsTreeView && viewItem == Queue",
+          "command": "SqsTreeView.UnHideNode",
+          "when": "view == SqsTreeView && viewItem == Queue",
           "group": "Filter"
         },
         {
-          "command": "SnsTreeView.RemoveTopic",
-          "when": "view == SnsTreeView && viewItem == Queue",
+          "command": "SqsTreeView.RemoveTopic",
+          "when": "view == SqsTreeView && viewItem == Queue",
           "group": "Queue"
         },
         {
-          "command": "SnsTreeView.Goto",
-          "when": "view == SnsTreeView && viewItem == Queue",
+          "command": "SqsTreeView.Goto",
+          "when": "view == SqsTreeView && viewItem == Queue",
           "group": "Queue"
         },
         {
-          "command": "SnsTreeView.SendMessage",
-          "when": "view == SnsTreeView && (viewItem == Queue || viewItem == Queue || viewItem == PublishAdhoc || viewItem == PublishFile)",
+          "command": "SqsTreeView.SendMessage",
+          "when": "view == SqsTreeView && (viewItem == Queue || viewItem == Queue || viewItem == PublishAdhoc || viewItem == PublishFile)",
           "group": "inline"
         },
         {
-          "command": "SnsTreeView.AddMessageFilePath",
-          "when": "view == SnsTreeView && viewItem == PublishGroup",
+          "command": "SqsTreeView.AddMessageFilePath",
+          "when": "view == SqsTreeView && viewItem == PublishGroup",
           "group": "inline"
         },
         {
-          "command": "SnsTreeView.RemoveMessageFilePath",
-          "when": "view == SnsTreeView && viewItem == PublishFile",
+          "command": "SqsTreeView.RemoveMessageFilePath",
+          "when": "view == SqsTreeView && viewItem == PublishFile",
           "group": "inline"
         }
       ]
@@ -228,7 +228,7 @@
     "views": {
       "aws-sqs-vscode-extension": [
         {
-          "id": "SnsTreeView",
+          "id": "SqsTreeView",
           "name": "Aws Sqs",
           "icon": "media/aws-sqs-logo-activitybar.png"
         }
@@ -236,8 +236,8 @@
     },
     "viewsWelcome": [
       {
-        "view": "SnsTreeView",
-        "contents": "Please click [+] to add your SQS Queue. \n [Add Queue](command:SnsTreeView.AddTopic) \n Leave Queue name empty to get all your topics. You can enter topic name partially. \n If you can not connect after a while check your Aws Credentials, Network and Proxy settings. \n\n\n\n To Access Aws, you need to configure aws credentials. \n For more detail on Aws Credentials [Click Here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) \n For a Youtube Tutorial [Click Here](https://www.youtube.com/watch?v=SON8sY1iOBU) \n [Update Aws EndPoint](command:SnsTreeView.UpdateAwsEndPoint)"
+        "view": "SqsTreeView",
+        "contents": "Please click [+] to add your SQS Queue. \n [Add Queue](command:SqsTreeView.AddTopic) \n Leave Queue name empty to get all your topics. You can enter topic name partially. \n If you can not connect after a while check your Aws Credentials, Network and Proxy settings. \n\n\n\n To Access Aws, you need to configure aws credentials. \n For more detail on Aws Credentials [Click Here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) \n For a Youtube Tutorial [Click Here](https://www.youtube.com/watch?v=SON8sY1iOBU) \n [Update Aws EndPoint](command:SqsTreeView.UpdateAwsEndPoint)"
       }
     ]
   },

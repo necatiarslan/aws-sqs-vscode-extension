@@ -26,7 +26,7 @@ export class SqsTreeView {
 		this.context = context;
 		this.LoadState();
 		this.treeDataProvider = new SqsTreeDataProvider();
-		this.view = vscode.window.createTreeView('SnsTreeView', { treeDataProvider: this.treeDataProvider, showCollapseAll: true });
+		this.view = vscode.window.createTreeView('SqsTreeView', { treeDataProvider: this.treeDataProvider, showCollapseAll: true });
 		this.Refresh();
 		context.subscriptions.push(this.view);
 		this.SetFilterMessage();
@@ -39,7 +39,7 @@ export class SqsTreeView {
 			ui.showInfoMessage('Aws Credentials Test Successfull');
 		}
 		else{
-			ui.logToOutput('SnsTreeView.TestAwsCredentials Error !!!', response.error);
+			ui.logToOutput('SqsTreeView.TestAwsCredentials Error !!!', response.error);
 			ui.showErrorMessage('Aws Credentials Test Error !!!', response.error);
 		}
 		
@@ -52,7 +52,7 @@ export class SqsTreeView {
 			ui.showInfoMessage('Aws Connection Test Successfull');
 		}
 		else{
-			ui.logToOutput('SnsTreeView.TestAwsConnection Error !!!', response.error);
+			ui.logToOutput('SqsTreeView.TestAwsConnection Error !!!', response.error);
 			ui.showErrorMessage('Aws Connection Test Error !!!', response.error);
 		}
 	}
@@ -65,7 +65,7 @@ export class SqsTreeView {
 	}
 
 	Refresh(): void {
-		ui.logToOutput('SnsTreeView.refresh Started');
+		ui.logToOutput('SqsTreeView.refresh Started');
 
 		vscode.window.withProgress({
 			location: vscode.ProgressLocation.Window,
@@ -80,13 +80,13 @@ export class SqsTreeView {
 	}
 
 	LoadTreeItems(){
-		ui.logToOutput('SnsTreeView.loadTreeItems Started');
+		ui.logToOutput('SqsTreeView.loadTreeItems Started');
 		this.treeDataProvider.Refresh();
 		this.SetViewTitle();
 	}
 
 	ResetView(): void {
-		ui.logToOutput('SnsTreeView.resetView Started');
+		ui.logToOutput('SqsTreeView.resetView Started');
 		this.FilterString = '';
 
 		this.treeDataProvider.Refresh();
@@ -97,31 +97,31 @@ export class SqsTreeView {
 	}
 
 	async AddToFav(node: SqsTreeItem) {
-		ui.logToOutput('SnsTreeView.AddToFav Started');
+		ui.logToOutput('SqsTreeView.AddToFav Started');
 		node.IsFav = true;
 		node.refreshUI();
 	}
 
 	async HideNode(node: SqsTreeItem) {
-		ui.logToOutput('SnsTreeView.HideNode Started');
+		ui.logToOutput('SqsTreeView.HideNode Started');
 		node.IsHidden = true;
 
 		this.treeDataProvider.Refresh();
 	}
 
 	async UnHideNode(node: SqsTreeItem) {
-		ui.logToOutput('SnsTreeView.UnHideNode Started');
+		ui.logToOutput('SqsTreeView.UnHideNode Started');
 		node.IsHidden = false;
 	}
 
 	async DeleteFromFav(node: SqsTreeItem) {
-		ui.logToOutput('SnsTreeView.DeleteFromFav Started');
+		ui.logToOutput('SqsTreeView.DeleteFromFav Started');
 		node.IsFav = false;
 		node.refreshUI();
 	}
 
 	async Filter() {
-		ui.logToOutput('SnsTreeView.Filter Started');
+		ui.logToOutput('SqsTreeView.Filter Started');
 		let filterStringTemp = await vscode.window.showInputBox({ value: this.FilterString, placeHolder: 'Enter Your Filter Text' });
 
 		if (filterStringTemp === undefined) { return; }
@@ -133,7 +133,7 @@ export class SqsTreeView {
 	}
 
 	async ShowOnlyFavorite() {
-		ui.logToOutput('SnsTreeView.ShowOnlyFavorite Started');
+		ui.logToOutput('SqsTreeView.ShowOnlyFavorite Started');
 		this.isShowOnlyFavorite = !this.isShowOnlyFavorite;
 		this.treeDataProvider.Refresh();
 		this.SetFilterMessage();
@@ -141,7 +141,7 @@ export class SqsTreeView {
 	}
 
 	async ShowHiddenNodes() {
-		ui.logToOutput('SnsTreeView.ShowHiddenNodes Started');
+		ui.logToOutput('SqsTreeView.ShowHiddenNodes Started');
 		this.isShowHiddenNodes = !this.isShowHiddenNodes;
 		this.treeDataProvider.Refresh();
 		this.SetFilterMessage();
@@ -153,7 +153,7 @@ export class SqsTreeView {
 	}
 
 	SaveState() {
-		ui.logToOutput('SnsTreeView.saveState Started');
+		ui.logToOutput('SqsTreeView.saveState Started');
 		try {
 
 			this.context.globalState.update('AwsProfile', this.AwsProfile);
@@ -164,21 +164,21 @@ export class SqsTreeView {
 			this.context.globalState.update('MessageFilePathList', this.MessageFilePathList);
 			this.context.globalState.update('AwsEndPoint', this.AwsEndPoint);
 
-			ui.logToOutput("SnsTreeView.saveState Successfull");
+			ui.logToOutput("SqsTreeView.saveState Successfull");
 		} catch (error) {
-			ui.logToOutput("SnsTreeView.saveState Error !!!");
+			ui.logToOutput("SqsTreeView.saveState Error !!!");
 		}
 	}
 
 	LoadState() {
-		ui.logToOutput('SnsTreeView.loadState Started');
+		ui.logToOutput('SqsTreeView.loadState Started');
 		try {
 			let AwsEndPointTemp: string | undefined = this.context.globalState.get('AwsEndPoint');
 			if (AwsEndPointTemp) { this.AwsEndPoint = AwsEndPointTemp; }
 		} 
 		catch (error:any) 
 		{
-			ui.logToOutput("SnsTreeView.loadState AwsEndPoint Error !!!", error);
+			ui.logToOutput("SqsTreeView.loadState AwsEndPoint Error !!!", error);
 			ui.showErrorMessage("Aws Sqs Load State AwsEndPoint Error !!!", error);
 		}
 
@@ -188,7 +188,7 @@ export class SqsTreeView {
 		} 
 		catch (error:any) 
 		{
-			ui.logToOutput("SnsTreeView.loadState AwsProfile Error !!!", error);
+			ui.logToOutput("SqsTreeView.loadState AwsProfile Error !!!", error);
 			ui.showErrorMessage("Aws Sqs Load State AwsProfile Error !!!", error);
 		}
 
@@ -198,7 +198,7 @@ export class SqsTreeView {
 		} 
 		catch (error:any) 
 		{
-			ui.logToOutput("SnsTreeView.loadState FilterString Error !!!", error);
+			ui.logToOutput("SqsTreeView.loadState FilterString Error !!!", error);
 			ui.showErrorMessage("Aws Sqs Load State FilterString Error !!!", error);
 		}
 
@@ -208,7 +208,7 @@ export class SqsTreeView {
 		} 
 		catch (error:any) 
 		{
-			ui.logToOutput("SnsTreeView.loadState Error !!!", error);
+			ui.logToOutput("SqsTreeView.loadState Error !!!", error);
 			ui.showErrorMessage("Aws Sqs Load State Error !!!", error);
 		}
 
@@ -218,7 +218,7 @@ export class SqsTreeView {
 		} 
 		catch (error:any) 
 		{
-			ui.logToOutput("SnsTreeView.loadState isShowHiddenNodes Error !!!", error);
+			ui.logToOutput("SqsTreeView.loadState isShowHiddenNodes Error !!!", error);
 			ui.showErrorMessage("Aws Sqs Load State isShowHiddenNodes Error !!!", error);
 		}
 
@@ -231,8 +231,8 @@ export class SqsTreeView {
 		} 
 		catch (error:any) 
 		{
-			ui.logToOutput("SnsTreeView.loadState SnsList Error !!!", error);
-			ui.showErrorMessage("Aws Sqs Load State SnsList Error !!!", error);
+			ui.logToOutput("SqsTreeView.loadState SqsList Error !!!", error);
+			ui.showErrorMessage("Aws Sqs Load State SqsList Error !!!", error);
 		}
 
 	}
@@ -257,7 +257,7 @@ export class SqsTreeView {
 	}
 
 	async AddQueue(){
-		ui.logToOutput('SnsTreeView.AddTopic Started');
+		ui.logToOutput('SqsTreeView.AddTopic Started');
 
 		let selectedRegion = await vscode.window.showInputBox({ placeHolder: 'Enter Region Eg: us-east-1', value: 'us-east-1' });
 		if(selectedRegion===undefined){ return; }
@@ -279,7 +279,7 @@ export class SqsTreeView {
 	}
 
 	async RemoveQueue(node: SqsTreeItem) {
-		ui.logToOutput('SnsTreeView.RemoveTopic Started');
+		ui.logToOutput('SqsTreeView.RemoveTopic Started');
 		
 		if(node.TreeItemType !== TreeItemType.Queue) { return;}
 
@@ -288,7 +288,7 @@ export class SqsTreeView {
 	}
 
 	async Goto(node: SqsTreeItem) {
-		ui.logToOutput('SnsTreeView.Goto Started');
+		ui.logToOutput('SqsTreeView.Goto Started');
 		
 		if(node.TreeItemType !== TreeItemType.Queue) { return;}
 
@@ -297,14 +297,14 @@ export class SqsTreeView {
 	}
 
 	async SqsView(node: SqsTreeItem) {
-		ui.logToOutput('SnsTreeView.SnsView Started');
+		ui.logToOutput('SqsTreeView.SqsView Started');
 		if(node.TreeItemType !== TreeItemType.Queue) { return;}
 
 		ui.showInfoMessage('Work In Progress');
 	}
 
 	async SendMessage(node: SqsTreeItem) {
-		ui.logToOutput('SnsTreeView.SendMessage Started');
+		ui.logToOutput('SqsTreeView.SendMessage Started');
 		if(node.IsRunning) { return;}
 		this.SetNodeRunning(node, true);
 		let message: string = "";
@@ -354,7 +354,7 @@ export class SqsTreeView {
 	}
 
 	async SelectAwsProfile(node: SqsTreeItem) {
-		ui.logToOutput('SnsTreeView.SelectAwsProfile Started');
+		ui.logToOutput('SqsTreeView.SelectAwsProfile Started');
 
 		var result = await api.GetAwsProfileList();
 		if(!result.isSuccessful){ return; }
@@ -368,7 +368,7 @@ export class SqsTreeView {
 	}
 
 	async UpdateAwsEndPoint() {
-		ui.logToOutput('SnsTreeView.UpdateAwsEndPoint Started');
+		ui.logToOutput('SqsTreeView.UpdateAwsEndPoint Started');
 
 		let awsEndPointUrl = await vscode.window.showInputBox({ placeHolder: 'Enter Aws End Point URL (Leave Empty To Return To Default)' });
 		if(awsEndPointUrl===undefined){ return; }
@@ -382,13 +382,13 @@ export class SqsTreeView {
 	}
 
 	async PrintQueue(node: SqsTreeItem) {
-		ui.logToOutput('SnsTreeView.PrintTopic Started');
+		ui.logToOutput('SqsTreeView.PrintTopic Started');
 		ui.showInfoMessage('Work In Progress');
 
 	}
 
 	async RemoveMessageFilePath(node: SqsTreeItem) {
-		ui.logToOutput('SnsTreeView.RemoveMessageFilePath Started');
+		ui.logToOutput('SqsTreeView.RemoveMessageFilePath Started');
 		if(node.TreeItemType !== TreeItemType.PublishFile) { return;}
 
 		this.treeDataProvider.RemoveMessageFilePath(node);
@@ -397,7 +397,7 @@ export class SqsTreeView {
 	}
 
 	async AddMessageFilePath(node: SqsTreeItem) {
-		ui.logToOutput('SnsTreeView.AddMessageFilePath Started');
+		ui.logToOutput('SqsTreeView.AddMessageFilePath Started');
 		if(node.TreeItemType !== TreeItemType.PublishGroup) { return;}
 
 		const selectedPath = await vscode.window.showOpenDialog({

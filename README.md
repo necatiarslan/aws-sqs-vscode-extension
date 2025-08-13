@@ -59,7 +59,7 @@ https://github.com/necatiarslan/aws-sqs-vscode-extension/issues/new
 - Display
   - Queue Name, Type, Url, ARN, Dead-letter Queue Enabled, Created Date, Last Updated Date, Max Message Size
   - Policy
-  - SNS Subscriptions
+  - Sqs Subscriptions
   - Lambda Triggers
   - EventBridge Pipes
   - Dead-letter Queue
@@ -78,6 +78,6 @@ necatia@gmail.com
 
 Other Extensions
 - https://bit.ly/aws-access-vscode-extension
-- https://bit.ly/vscode-aws-sns
+- https://bit.ly/vscode-aws-Sqs
 - https://bit.ly/aws-cloudwatch-vscode-extension
 - https://bit.ly/airflow-vscode-extension

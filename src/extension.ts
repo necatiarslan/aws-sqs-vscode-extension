@@ -8,83 +8,83 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let treeView:SqsTreeView = new SqsTreeView(context);
 
-	vscode.commands.registerCommand('SnsTreeView.Refresh', () => {
+	vscode.commands.registerCommand('SqsTreeView.Refresh', () => {
 		treeView.Refresh();
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.Filter', () => {
+	vscode.commands.registerCommand('SqsTreeView.Filter', () => {
 		treeView.Filter();
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.ShowOnlyFavorite', () => {
+	vscode.commands.registerCommand('SqsTreeView.ShowOnlyFavorite', () => {
 		treeView.ShowOnlyFavorite();
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.ShowHiddenNodes', () => {
+	vscode.commands.registerCommand('SqsTreeView.ShowHiddenNodes', () => {
 		treeView.ShowHiddenNodes();
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.AddToFav', (node: SqsTreeItem) => {
+	vscode.commands.registerCommand('SqsTreeView.AddToFav', (node: SqsTreeItem) => {
 		treeView.AddToFav(node);
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.DeleteFromFav', (node: SqsTreeItem) => {
+	vscode.commands.registerCommand('SqsTreeView.DeleteFromFav', (node: SqsTreeItem) => {
 		treeView.DeleteFromFav(node);
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.HideNode', (node: SqsTreeItem) => {
+	vscode.commands.registerCommand('SqsTreeView.HideNode', (node: SqsTreeItem) => {
 		treeView.HideNode(node);
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.UnHideNode', (node: SqsTreeItem) => {
+	vscode.commands.registerCommand('SqsTreeView.UnHideNode', (node: SqsTreeItem) => {
 		treeView.UnHideNode(node);
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.AddTopic', () => {
+	vscode.commands.registerCommand('SqsTreeView.AddTopic', () => {
 		treeView.AddQueue();
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.RemoveTopic', (node: SqsTreeItem) => {
+	vscode.commands.registerCommand('SqsTreeView.RemoveTopic', (node: SqsTreeItem) => {
 		treeView.RemoveQueue(node);
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.Goto', (node: SqsTreeItem) => {
+	vscode.commands.registerCommand('SqsTreeView.Goto', (node: SqsTreeItem) => {
 		treeView.Goto(node);
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.SelectAwsProfile', (node: SqsTreeItem) => {
+	vscode.commands.registerCommand('SqsTreeView.SelectAwsProfile', (node: SqsTreeItem) => {
 		treeView.SelectAwsProfile(node);
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.TestAwsConnection', () => {
+	vscode.commands.registerCommand('SqsTreeView.TestAwsConnection', () => {
 		treeView.TestAwsConnection();
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.UpdateAwsEndPoint', () => {
+	vscode.commands.registerCommand('SqsTreeView.UpdateAwsEndPoint', () => {
 		treeView.UpdateAwsEndPoint();
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.Donate', () => {
+	vscode.commands.registerCommand('SqsTreeView.Donate', () => {
 		treeView.Donate();
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.BugAndNewFeature', () => {
+	vscode.commands.registerCommand('SqsTreeView.BugAndNewFeature', () => {
 		treeView.BugAndNewFeature();
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.SendMessage', (node: SqsTreeItem) => {
+	vscode.commands.registerCommand('SqsTreeView.SendMessage', (node: SqsTreeItem) => {
 		treeView.SendMessage(node);
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.SnsView', (node: SqsTreeItem) => {
+	vscode.commands.registerCommand('SqsTreeView.SqsView', (node: SqsTreeItem) => {
 		treeView.SqsView(node);
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.RemoveMessageFilePath', async (node: SqsTreeItem) => {
+	vscode.commands.registerCommand('SqsTreeView.RemoveMessageFilePath', async (node: SqsTreeItem) => {
 		await treeView.RemoveMessageFilePath(node);
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.AddMessageFilePath', async (node: SqsTreeItem) => {
+	vscode.commands.registerCommand('SqsTreeView.AddMessageFilePath', async (node: SqsTreeItem) => {
 		await treeView.AddMessageFilePath(node);
 	});
 
