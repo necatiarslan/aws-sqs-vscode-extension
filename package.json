@@ -61,12 +61,12 @@
         "title": "UnHide"
       },
       {
-        "command": "SqsTreeView.AddTopic",
+        "command": "SqsTreeView.AddQueue",
         "title": "Add Queue",
         "icon": "$(add)"
       },
       {
-        "command": "SqsTreeView.RemoveTopic",
+        "command": "SqsTreeView.RemoveQueue",
         "title": "Remove Queue"
       },
       {
@@ -138,7 +138,7 @@
           "group": "navigation@3"
         },
         {
-          "command": "SqsTreeView.AddTopic",
+          "command": "SqsTreeView.AddQueue",
           "when": "view == SqsTreeView",
           "group": "navigation@4"
         },
@@ -195,7 +195,7 @@
           "group": "Filter"
         },
         {
-          "command": "SqsTreeView.RemoveTopic",
+          "command": "SqsTreeView.RemoveQueue",
           "when": "view == SqsTreeView && viewItem == Queue",
           "group": "Queue"
         },
@@ -247,7 +247,7 @@
     "viewsWelcome": [
       {
         "view": "SqsTreeView",
-        "contents": "Please click [+] to add your SQS Queue. \n [Add Queue](command:SqsTreeView.AddTopic) \n Leave Queue name empty to get all your topics. You can enter queue name partially. \n If you can not connect after a while check your Aws Credentials, Network and Proxy settings. \n\n\n\n To Access Aws, you need to configure aws credentials. \n For more detail on Aws Credentials [Click Here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) \n For a Youtube Tutorial [Click Here](https://www.youtube.com/watch?v=SON8sY1iOBU) \n [Update Aws EndPoint](command:SqsTreeView.UpdateAwsEndPoint)"
+        "contents": "Please click [+] to add your SQS Queue. \n [Add Queue](command:SqsTreeView.AddQueue) \n Leave Queue name empty to get all your topics. You can enter queue name partially. \n If you can not connect after a while check your Aws Credentials, Network and Proxy settings. \n\n\n\n To Access Aws, you need to configure aws credentials. \n For more detail on Aws Credentials [Click Here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) \n For a Youtube Tutorial [Click Here](https://www.youtube.com/watch?v=SON8sY1iOBU) \n [Update Aws EndPoint](command:SqsTreeView.UpdateAwsEndPoint)"
       }
     ]
   },

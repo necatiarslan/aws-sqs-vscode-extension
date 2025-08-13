@@ -123,5 +123,7 @@ export enum TreeItemType{
 	PublishFile= 4,
 	ReceiveGroup = 5,
 	ReceivedMessage = 6,
+	DetailGroup = 7,
+	DetailItem = 8,
 	Other = 99
 }

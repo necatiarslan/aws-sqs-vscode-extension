@@ -40,11 +40,11 @@ export function activate(context: vscode.ExtensionContext) {
 		treeView.UnHideNode(node);
 	});
 
-	vscode.commands.registerCommand('SqsTreeView.AddTopic', () => {
+	vscode.commands.registerCommand('SqsTreeView.AddQueue', () => {
 		treeView.AddQueue();
 	});
 
-	vscode.commands.registerCommand('SqsTreeView.RemoveTopic', (node: SqsTreeItem) => {
+	vscode.commands.registerCommand('SqsTreeView.RemoveQueue', (node: SqsTreeItem) => {
 		treeView.RemoveQueue(node);
 	});
 

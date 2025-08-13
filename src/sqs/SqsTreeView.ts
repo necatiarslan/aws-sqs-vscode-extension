@@ -16,8 +16,8 @@ export class SqsTreeView {
 	public isShowHiddenNodes: boolean = false;
 	public AwsProfile: string = "default";	
 	public AwsEndPoint: string | undefined;
-	public QueueList: {Region: string, TopicArn: string}[] = [];
-	public MessageFilePathList: {Region: string, TopicArn: string, MessageFilePath: string}[] = [];
+	public QueueList: {Region: string, QueueArn: string}[] = [];
+	public MessageFilePathList: {Region: string, QueueArn: string, MessageFilePath: string}[] = [];
 
 
 	constructor(context: vscode.ExtensionContext) {
@@ -223,10 +223,10 @@ export class SqsTreeView {
 		}
 
 		try {
-			let QueuListTemp:{Region: string, TopicArn: string}[] | undefined  = this.context.globalState.get('QueueList');
+			let QueuListTemp:{Region: string, QueueArn: string}[] | undefined  = this.context.globalState.get('QueueList');
 			if(QueuListTemp){ this.QueueList = QueuListTemp; }
 
-			let MessageFilePathListTemp:{Region: string, TopicArn: string, MessageFilePath: string}[] | undefined  = this.context.globalState.get('MessageFilePathList');
+			let MessageFilePathListTemp:{Region: string, QueueArn: string, MessageFilePath: string}[] | undefined  = this.context.globalState.get('MessageFilePathList');
 			if(MessageFilePathListTemp){ this.MessageFilePathList = MessageFilePathListTemp; }
 		} 
 		catch (error:any) 
@@ -257,29 +257,29 @@ export class SqsTreeView {
 	}
 
 	async AddQueue(){
-		ui.logToOutput('SqsTreeView.AddTopic Started');
+		ui.logToOutput('SqsTreeView.AddQueue Started');
 
 		let selectedRegion = await vscode.window.showInputBox({ placeHolder: 'Enter Region Eg: us-east-1', value: 'us-east-1' });
 		if(selectedRegion===undefined){ return; }
 
-		let selectedTopicName = await vscode.window.showInputBox({ placeHolder: 'Enter Queue Name / Search Text' });
-		if(selectedTopicName===undefined){ return; }
+		let selectedQueueName = await vscode.window.showInputBox({ placeHolder: 'Enter Queue Name / Search Text' });
+		if(selectedQueueName===undefined){ return; }
 
-		var resultTopic = await api.GetSqsQueueList(selectedRegion, selectedTopicName);
-		if(!resultTopic.isSuccessful){ return; }
+		var resultQueue = await api.GetSqsQueueList(selectedRegion, selectedQueueName);
+		if(!resultQueue.isSuccessful){ return; }
 
-		let selectedQueuList = await vscode.window.showQuickPick(resultTopic.result, {canPickMany:true, placeHolder: 'Select Queue(s)'});
+		let selectedQueuList = await vscode.window.showQuickPick(resultQueue.result, {canPickMany:true, placeHolder: 'Select Queue(s)'});
 		if(!selectedQueuList || selectedQueuList.length===0){ return; }
 
-		for(var selectedTopic of selectedQueuList)
+		for(var selectedQueue of selectedQueuList)
 		{
-			this.treeDataProvider.AddQueue(selectedRegion, selectedTopic);
+			this.treeDataProvider.AddQueue(selectedRegion, selectedQueue);
 		}
 		this.SaveState();
 	}
 
 	async RemoveQueue(node: SqsTreeItem) {
-		ui.logToOutput('SqsTreeView.RemoveTopic Started');
+		ui.logToOutput('SqsTreeView.RemoveQueue Started');
 		
 		if(node.TreeItemType !== TreeItemType.Queue) { return;}
 
@@ -406,7 +406,7 @@ export class SqsTreeView {
 	}
 
 	async PrintQueue(node: SqsTreeItem) {
-		ui.logToOutput('SqsTreeView.PrintTopic Started');
+		ui.logToOutput('SqsTreeView.PrintQueue Started');
 		ui.showInfoMessage('Work In Progress');
 
 	}

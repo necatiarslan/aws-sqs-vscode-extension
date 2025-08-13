@@ -74,19 +74,19 @@ export async function GetSqsQueueList(
       marker = queList.NextToken;
     } while (marker);
 
-    let matchingTopics;
+    let matchingQueues;
     if (QueName) {
-      matchingTopics = allQues.filter(
+      matchingQueues = allQues.filter(
         (que) =>
           que.includes(QueName) || QueName.length === 0
       );
     } else {
-      matchingTopics = allQues;
+      matchingQueues = allQues;
     }
 
     // Extract the function names into the result
-    if (matchingTopics && matchingTopics.length > 0) {
-      matchingTopics.forEach((que) => {
+    if (matchingQueues && matchingQueues.length > 0) {
+      matchingQueues.forEach((que) => {
         if (que) result.result.push(que!);
       });
     }
@@ -96,10 +96,45 @@ export async function GetSqsQueueList(
   } catch (error: any) {
     result.isSuccessful = false;
     result.error = error;
-    ui.showErrorMessage("api.GetSqsTopicList Error !!!", error);
-    ui.logToOutput("api.GetSqsTopicList Error !!!", error);
+    ui.showErrorMessage("api.GetSqsQueueList Error !!!", error);
+    ui.logToOutput("api.GetSqsQueueList Error !!!", error);
     return result;
   }
+}
+
+import {
+  GetQueueAttributesCommand,
+  GetQueueAttributesCommandInput,
+  GetQueueAttributesCommandOutput,
+} from "@aws-sdk/client-sqs";
+
+export async function GetQueueDetails(region: string, queueUrl: string) {
+  const sqs = new SQSClient({ region });
+  const command = new GetQueueAttributesCommand({
+    QueueUrl: queueUrl,
+    AttributeNames: [
+      "QueueArn",
+      "CreatedTimestamp",
+      "LastModifiedTimestamp",
+      "MaximumMessageSize",
+      "RedrivePolicy", // Dead-letter queue info
+      "All" // To get all attributes
+    ]
+  });
+  const response = await sqs.send(command);
+
+  // Extract details
+  return {
+    QueueUrl: queueUrl,
+    QueueArn: response.Attributes?.QueueArn,
+    CreatedDate: response.Attributes?.CreatedTimestamp,
+    LastUpdatedDate: response.Attributes?.LastModifiedTimestamp,
+    MaxMessageSize: response.Attributes?.MaximumMessageSize,
+    DeadLetterQueueEnabled: !!response.Attributes?.RedrivePolicy,
+    // Queue Name and Type are not direct attributes, but you can parse the name from the URL
+    QueueName: queueUrl.split("/").pop(),
+    Type: response.Attributes?.FifoQueue === "true" ? "FIFO" : "Standard"
+  };
 }
 
 export function isJsonString(jsonString: string): boolean {
@@ -177,38 +212,6 @@ export async function ReceiveMessage(
     result.error = error;
     ui.showErrorMessage("api.ReceiveMessage Error !!!", error);
     ui.logToOutput("api.ReceiveMessage Error !!!", error);
-    return result;
-  }
-}
-
-import {
-  GetQueueAttributesCommand,
-  GetQueueAttributesCommandInput,
-  GetQueueAttributesCommandOutput,
-} from "@aws-sdk/client-sqs";
-
-export async function GetQueueAttributes(
-  Region: string,
-  QueueUrl: string
-): Promise<MethodResult<GetQueueAttributesCommandOutput>> {
-  let result: MethodResult<GetQueueAttributesCommandOutput> = new MethodResult<GetQueueAttributesCommandOutput>();
-
-  try {
-    const sqs = await GetSQSClient(Region);
-
-    const command = new GetQueueAttributesCommand({
-      QueueUrl: QueueUrl,
-    });
-
-    const response = await sqs.send(command);
-    result.result = response;
-    result.isSuccessful = true;
-    return result;
-  } catch (error: any) {
-    result.isSuccessful = false;
-    result.error = error;
-    ui.showErrorMessage("api.GetTopicAttributes Error !!!", error);
-    ui.logToOutput("api.GetTopicAttributes Error !!!", error);
     return result;
   }
 }
