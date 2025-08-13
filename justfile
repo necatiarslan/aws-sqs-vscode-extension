@@ -28,19 +28,18 @@ npm-install:
     npm install
     npx tsc --noEmit
 
-list-topics:
-    aws --endpoint-url=http://localhost:4566 sns list-topics
+list-queues:
+    aws --endpoint-url=http://localhost:4566 sqs list-queues
 
-add-topic:
-    aws --endpoint-url=http://localhost:4566 sns create-topic --name my-topic
+add-queue:
+    aws --endpoint-url=http://localhost:4566 sqs create-queue --queue-name my-queue
 
-add-subscription:
-    aws --endpoint-url=http://localhost:4566 sns subscribe --topic-arn arn:aws:sns:us-east-1:000000000000:my-topic --protocol email --notification-endpoint abc@example.com
-    aws --endpoint-url=http://localhost:4566 sns subscribe --topic-arn arn:aws:sns:us-east-1:000000000000:my-topic --protocol email --notification-endpoint asd@example.com
-    aws --endpoint-url=http://localhost:4566 sns subscribe --topic-arn arn:aws:sns:us-east-1:000000000000:my-topic --protocol sqs --notification-endpoint arn:aws:sqs:us-east-1:000000000000:my-queue
+delete-queue:
+    aws --endpoint-url=http://localhost:4566 sqs delete-queue --queue-url http://localhost:4566/000000000000/my-queue
 
-remove-subscriptions:
-    aws --endpoint-url=http://localhost:4566 sns list-subscriptions-by-topic --topic-arn "arn:aws:sns:us-east-1:000000000000:my-topic" --query "Subscriptions[?SubscriptionArn!='PendingConfirmation'].SubscriptionArn" --output text | xargs -I {} aws --endpoint-url=http://localhost:4566 sns unsubscribe --subscription-arn "{}"
+send-message:
+    aws --endpoint-url=http://localhost:4566 sqs send-message --queue-url http://localhost:4566/000000000000/my-queue --message-body "Hello World"  
 
-list-subscriptions:
-    aws --endpoint-url=http://localhost:4566 sns list-subscriptions-by-topic --topic-arn arn:aws:sns:us-east-1:000000000000:my-topic
+receive-message:
+    aws --endpoint-url=http://localhost:4566 sqs receive-message --queue-url http://localhost:4566/000000000000/my-queue
+

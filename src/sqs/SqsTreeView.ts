@@ -1,31 +1,31 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as vscode from 'vscode';
-import { SnsTreeItem, TreeItemType } from './SnsTreeItem';
-import { SnsTreeDataProvider } from './SnsTreeDataProvider';
+import { SqsTreeItem, TreeItemType } from './SqsTreeItem';
+import { SqsTreeDataProvider } from './SqsTreeDataProvider';
 import * as ui from '../common/UI';
 import * as api from '../common/API';
 
-export class SnsTreeView {
+export class SqsTreeView {
 
-	public static Current: SnsTreeView;
-	public view: vscode.TreeView<SnsTreeItem>;
-	public treeDataProvider: SnsTreeDataProvider;
+	public static Current: SqsTreeView;
+	public view: vscode.TreeView<SqsTreeItem>;
+	public treeDataProvider: SqsTreeDataProvider;
 	public context: vscode.ExtensionContext;
 	public FilterString: string = "";
 	public isShowOnlyFavorite: boolean = false;
 	public isShowHiddenNodes: boolean = false;
 	public AwsProfile: string = "default";	
 	public AwsEndPoint: string | undefined;
-	public TopicList: {Region: string, TopicArn: string}[] = [];
+	public QueueList: {Region: string, TopicArn: string}[] = [];
 	public MessageFilePathList: {Region: string, TopicArn: string, MessageFilePath: string}[] = [];
 
 
 	constructor(context: vscode.ExtensionContext) {
 		ui.logToOutput('TreeView.constructor Started');
-		SnsTreeView.Current = this;
+		SqsTreeView.Current = this;
 		this.context = context;
 		this.LoadState();
-		this.treeDataProvider = new SnsTreeDataProvider();
+		this.treeDataProvider = new SqsTreeDataProvider();
 		this.view = vscode.window.createTreeView('SnsTreeView', { treeDataProvider: this.treeDataProvider, showCollapseAll: true });
 		this.Refresh();
 		context.subscriptions.push(this.view);
@@ -96,25 +96,25 @@ export class SnsTreeView {
 		this.Refresh();
 	}
 
-	async AddToFav(node: SnsTreeItem) {
+	async AddToFav(node: SqsTreeItem) {
 		ui.logToOutput('SnsTreeView.AddToFav Started');
 		node.IsFav = true;
 		node.refreshUI();
 	}
 
-	async HideNode(node: SnsTreeItem) {
+	async HideNode(node: SqsTreeItem) {
 		ui.logToOutput('SnsTreeView.HideNode Started');
 		node.IsHidden = true;
 
 		this.treeDataProvider.Refresh();
 	}
 
-	async UnHideNode(node: SnsTreeItem) {
+	async UnHideNode(node: SqsTreeItem) {
 		ui.logToOutput('SnsTreeView.UnHideNode Started');
 		node.IsHidden = false;
 	}
 
-	async DeleteFromFav(node: SnsTreeItem) {
+	async DeleteFromFav(node: SqsTreeItem) {
 		ui.logToOutput('SnsTreeView.DeleteFromFav Started');
 		node.IsFav = false;
 		node.refreshUI();
@@ -160,7 +160,7 @@ export class SnsTreeView {
 			this.context.globalState.update('FilterString', this.FilterString);
 			this.context.globalState.update('ShowOnlyFavorite', this.isShowOnlyFavorite);
 			this.context.globalState.update('ShowHiddenNodes', this.isShowHiddenNodes);
-			this.context.globalState.update('TopicList', this.TopicList);
+			this.context.globalState.update('QueueList', this.QueueList);
 			this.context.globalState.update('MessageFilePathList', this.MessageFilePathList);
 			this.context.globalState.update('AwsEndPoint', this.AwsEndPoint);
 
@@ -223,8 +223,8 @@ export class SnsTreeView {
 		}
 
 		try {
-			let TopicListTemp:{Region: string, TopicArn: string}[] | undefined  = this.context.globalState.get('TopicList');
-			if(TopicListTemp){ this.TopicList = TopicListTemp; }
+			let QueuListTemp:{Region: string, TopicArn: string}[] | undefined  = this.context.globalState.get('QueueList');
+			if(QueuListTemp){ this.QueueList = QueuListTemp; }
 
 			let MessageFilePathListTemp:{Region: string, TopicArn: string, MessageFilePath: string}[] | undefined  = this.context.globalState.get('MessageFilePathList');
 			if(MessageFilePathListTemp){ this.MessageFilePathList = MessageFilePathListTemp; }
@@ -238,7 +238,7 @@ export class SnsTreeView {
 	}
 
 	async SetFilterMessage(){
-		if(this.TopicList.length > 0)
+		if(this.QueueList.length > 0)
 		{
 			this.view.message = 
 			await this.GetFilterProfilePrompt()
@@ -256,7 +256,7 @@ export class SnsTreeView {
 		return variable ? "✓" : "𐄂";
 	}
 
-	async AddTopic(){
+	async AddQueue(){
 		ui.logToOutput('SnsTreeView.AddTopic Started');
 
 		let selectedRegion = await vscode.window.showInputBox({ placeHolder: 'Enter Region Eg: us-east-1', value: 'us-east-1' });
@@ -265,29 +265,29 @@ export class SnsTreeView {
 		let selectedTopicName = await vscode.window.showInputBox({ placeHolder: 'Enter Queue Name / Search Text' });
 		if(selectedTopicName===undefined){ return; }
 
-		var resultTopic = await api.GetSnsTopicList(selectedRegion, selectedTopicName);
+		var resultTopic = await api.GetSqsQueueList(selectedRegion, selectedTopicName);
 		if(!resultTopic.isSuccessful){ return; }
 
-		let selectedTopicList = await vscode.window.showQuickPick(resultTopic.result, {canPickMany:true, placeHolder: 'Select Queue(s)'});
-		if(!selectedTopicList || selectedTopicList.length===0){ return; }
+		let selectedQueuList = await vscode.window.showQuickPick(resultTopic.result, {canPickMany:true, placeHolder: 'Select Queue(s)'});
+		if(!selectedQueuList || selectedQueuList.length===0){ return; }
 
-		for(var selectedTopic of selectedTopicList)
+		for(var selectedTopic of selectedQueuList)
 		{
-			this.treeDataProvider.AddTopic(selectedRegion, selectedTopic);
+			this.treeDataProvider.AddQueue(selectedRegion, selectedTopic);
 		}
 		this.SaveState();
 	}
 
-	async RemoveTopic(node: SnsTreeItem) {
+	async RemoveQueue(node: SqsTreeItem) {
 		ui.logToOutput('SnsTreeView.RemoveTopic Started');
 		
 		if(node.TreeItemType !== TreeItemType.Queue) { return;}
 
-		this.treeDataProvider.RemoveTopic(node.Region, node.TopicArn);		
+		this.treeDataProvider.RemoveQueue(node.Region, node.QueueArn);		
 		this.SaveState();
 	}
 
-	async Goto(node: SnsTreeItem) {
+	async Goto(node: SqsTreeItem) {
 		ui.logToOutput('SnsTreeView.Goto Started');
 		
 		if(node.TreeItemType !== TreeItemType.Queue) { return;}
@@ -296,15 +296,15 @@ export class SnsTreeView {
 		
 	}
 
-	async SnsView(node: SnsTreeItem) {
+	async SqsView(node: SqsTreeItem) {
 		ui.logToOutput('SnsTreeView.SnsView Started');
 		if(node.TreeItemType !== TreeItemType.Queue) { return;}
 
 		ui.showInfoMessage('Work In Progress');
 	}
 
-	async PublishMessage(node: SnsTreeItem) {
-		ui.logToOutput('SnsTreeView.PublishMessage Started');
+	async SendMessage(node: SqsTreeItem) {
+		ui.logToOutput('SnsTreeView.SendMessage Started');
 		if(node.IsRunning) { return;}
 		this.SetNodeRunning(node, true);
 		let message: string = "";
@@ -334,45 +334,26 @@ export class SnsTreeView {
 			message = input;
 		}
 		
-		let result = await api.PublishMessage(node.Region, node.TopicArn, message);
+		let result = await api.SendMessage(node.Region, node.QueueArn, message);
 		if(!result.isSuccessful)
 		{
-			ui.logToOutput("api.PublishMessage Error !!!", result.error);
-			ui.showErrorMessage('Publish Message Error !!!', result.error);
+			ui.logToOutput("api.SendMessage Error !!!", result.error);
+			ui.showErrorMessage('Send Message Error !!!', result.error);
 			this.SetNodeRunning(node, false);
 			return;
 		}
-		ui.logToOutput("api.PublishMessage Success !!!");
+		ui.logToOutput("api.SendMessage Success !!!");
 		ui.logToOutput("MessageId: " + result.result.MessageId);
 
 		ui.showInfoMessage('Message Published Successfully. MessageId: ' + result.result.MessageId);
 		this.SetNodeRunning(node, false);
 	}
 
-	private SetNodeRunning(node: SnsTreeItem, isRunning: boolean) {
+	private SetNodeRunning(node: SqsTreeItem, isRunning: boolean) {
 		node.IsRunning = isRunning; node.refreshUI(); this.treeDataProvider.Refresh();
 	}
 
-	async GetSubscriptions(node: SnsTreeItem) {
-		ui.logToOutput('SnsTreeView.GetSubscriptions Started');
-		if(node.IsRunning) { return;}
-		this.SetNodeRunning(node, true);
-		let result = await api.GetSubscriptions(node.Region, node.TopicArn);
-		if(!result.isSuccessful)
-		{
-			ui.logToOutput("api.GetSubscriptions Error !!!", result.error);
-			ui.showErrorMessage('Get Subscriptions Error !!!', result.error);
-			this.SetNodeRunning(node, false);
-			return;
-		}
-		ui.logToOutput("api.GetSubscriptions Success !!!");
-		ui.logToOutput("Subscriptions: " + JSON.stringify(result.result));
-
-		this.treeDataProvider.AddSubscriptions(node, result.result);
-		this.SetNodeRunning(node, false);
-	}
-
-	async SelectAwsProfile(node: SnsTreeItem) {
+	async SelectAwsProfile(node: SqsTreeItem) {
 		ui.logToOutput('SnsTreeView.SelectAwsProfile Started');
 
 		var result = await api.GetAwsProfileList();
@@ -400,13 +381,13 @@ export class SnsTreeView {
 		this.Refresh();
 	}
 
-	async PrintTopic(node: SnsTreeItem) {
+	async PrintQueue(node: SqsTreeItem) {
 		ui.logToOutput('SnsTreeView.PrintTopic Started');
 		ui.showInfoMessage('Work In Progress');
 
 	}
 
-	async RemoveMessageFilePath(node: SnsTreeItem) {
+	async RemoveMessageFilePath(node: SqsTreeItem) {
 		ui.logToOutput('SnsTreeView.RemoveMessageFilePath Started');
 		if(node.TreeItemType !== TreeItemType.PublishFile) { return;}
 
@@ -415,7 +396,7 @@ export class SnsTreeView {
 		ui.showInfoMessage('Message Path Removed Successfully');
 	}
 
-	async AddMessageFilePath(node: SnsTreeItem) {
+	async AddMessageFilePath(node: SqsTreeItem) {
 		ui.logToOutput('SnsTreeView.AddMessageFilePath Started');
 		if(node.TreeItemType !== TreeItemType.PublishGroup) { return;}
 

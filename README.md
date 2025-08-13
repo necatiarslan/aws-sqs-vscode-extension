@@ -5,7 +5,7 @@
 
 ## ✨ Features  
 
-- **Publish Messages**: Publish messages to Aws Sqs Queue with ease. 
+- **Send Messages**: Send messages to Aws Sqs Queue with ease. 
 - **Manage Messages**: Save and reuse messages for later use.
 - **Subscriptions**: Monitor subscriptions to Aws Sqs Queue.
 - **AWS Profile Support**: Work with multiple AWS profiles seamlessly.  

@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as vscode from 'vscode';
 
-export class SnsTreeItem extends vscode.TreeItem {
+export class SqsTreeItem extends vscode.TreeItem {
 	public IsFav: boolean = false
 	public TreeItemType:TreeItemType
 	public Text:string
-	public TopicArn:string = ""
-	public TopicName:string = ""
+	public QueueArn:string = ""
+	public QueueName:string = ""
 	public Region:string = ""
-	public Parent:SnsTreeItem | undefined
-	public Children:SnsTreeItem[] = []
+	public Parent:SqsTreeItem | undefined
+	public Children:SqsTreeItem[] = []
 	public IsHidden: boolean = false
 	public MessageFilePath: string | undefined
 	public IsRunning: boolean = false;
@@ -69,7 +69,7 @@ export class SnsTreeItem extends vscode.TreeItem {
 		return this.IsAnyChidrenFavInternal(this);
 	}
 
-	public IsAnyChidrenFavInternal(node:SnsTreeItem): boolean{
+	public IsAnyChidrenFavInternal(node:SqsTreeItem): boolean{
 		for(var n of node.Children)
 		{
 			if(n.IsFav)
@@ -99,10 +99,10 @@ export class SnsTreeItem extends vscode.TreeItem {
 		return false;
 	}
 
-	public IsFilterStringMatchAnyChildren(node:SnsTreeItem, FilterString:string): boolean{
+	public IsFilterStringMatchAnyChildren(node:SqsTreeItem, FilterString:string): boolean{
 		for(var n of node.Children)
 		{
-			if(n.Text.includes(FilterString) || n.Region?.includes(FilterString) || n.TopicArn?.includes(FilterString))
+			if(n.Text.includes(FilterString) || n.Region?.includes(FilterString) || n.QueueArn?.includes(FilterString))
 			{
 				return true;
 			}

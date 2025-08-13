@@ -1,12 +1,12 @@
 import * as vscode from 'vscode';
 import * as ui from './common/UI';
-import { SnsTreeView } from './sns/SnsTreeView';
-import { SnsTreeItem } from './sns/SnsTreeItem';
+import { SqsTreeView } from './sqs/SqsTreeView';
+import { SqsTreeItem } from './sqs/SqsTreeItem';
 
 export function activate(context: vscode.ExtensionContext) {
 	ui.logToOutput('Aws Sqs Extension activation started');
 
-	let treeView:SnsTreeView = new SnsTreeView(context);
+	let treeView:SqsTreeView = new SqsTreeView(context);
 
 	vscode.commands.registerCommand('SnsTreeView.Refresh', () => {
 		treeView.Refresh();
@@ -24,35 +24,35 @@ export function activate(context: vscode.ExtensionContext) {
 		treeView.ShowHiddenNodes();
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.AddToFav', (node: SnsTreeItem) => {
+	vscode.commands.registerCommand('SnsTreeView.AddToFav', (node: SqsTreeItem) => {
 		treeView.AddToFav(node);
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.DeleteFromFav', (node: SnsTreeItem) => {
+	vscode.commands.registerCommand('SnsTreeView.DeleteFromFav', (node: SqsTreeItem) => {
 		treeView.DeleteFromFav(node);
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.HideNode', (node: SnsTreeItem) => {
+	vscode.commands.registerCommand('SnsTreeView.HideNode', (node: SqsTreeItem) => {
 		treeView.HideNode(node);
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.UnHideNode', (node: SnsTreeItem) => {
+	vscode.commands.registerCommand('SnsTreeView.UnHideNode', (node: SqsTreeItem) => {
 		treeView.UnHideNode(node);
 	});
 
 	vscode.commands.registerCommand('SnsTreeView.AddTopic', () => {
-		treeView.AddTopic();
+		treeView.AddQueue();
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.RemoveTopic', (node: SnsTreeItem) => {
-		treeView.RemoveTopic(node);
+	vscode.commands.registerCommand('SnsTreeView.RemoveTopic', (node: SqsTreeItem) => {
+		treeView.RemoveQueue(node);
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.Goto', (node: SnsTreeItem) => {
+	vscode.commands.registerCommand('SnsTreeView.Goto', (node: SqsTreeItem) => {
 		treeView.Goto(node);
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.SelectAwsProfile', (node: SnsTreeItem) => {
+	vscode.commands.registerCommand('SnsTreeView.SelectAwsProfile', (node: SqsTreeItem) => {
 		treeView.SelectAwsProfile(node);
 	});
 
@@ -72,24 +72,20 @@ export function activate(context: vscode.ExtensionContext) {
 		treeView.BugAndNewFeature();
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.PublishMessage', (node: SnsTreeItem) => {
-		treeView.PublishMessage(node);
+	vscode.commands.registerCommand('SnsTreeView.SendMessage', (node: SqsTreeItem) => {
+		treeView.SendMessage(node);
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.SnsView', (node: SnsTreeItem) => {
-		treeView.SnsView(node);
+	vscode.commands.registerCommand('SnsTreeView.SnsView', (node: SqsTreeItem) => {
+		treeView.SqsView(node);
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.RemoveMessageFilePath', async (node: SnsTreeItem) => {
+	vscode.commands.registerCommand('SnsTreeView.RemoveMessageFilePath', async (node: SqsTreeItem) => {
 		await treeView.RemoveMessageFilePath(node);
 	});
 
-	vscode.commands.registerCommand('SnsTreeView.AddMessageFilePath', async (node: SnsTreeItem) => {
+	vscode.commands.registerCommand('SnsTreeView.AddMessageFilePath', async (node: SqsTreeItem) => {
 		await treeView.AddMessageFilePath(node);
-	});
-
-	vscode.commands.registerCommand('SnsTreeView.GetSubscriptions', async (node: SnsTreeItem) => {
-		await treeView.GetSubscriptions(node);
 	});
 
 	ui.logToOutput('Aws Sqs Extension activation completed');

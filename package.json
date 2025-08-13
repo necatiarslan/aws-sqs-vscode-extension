@@ -79,8 +79,8 @@
         "icon": "$(account)"
       },
       {
-        "command": "SnsTreeView.PublishMessage",
-        "title": "Publish Message",
+        "command": "SnsTreeView.SendMessage",
+        "title": "Send Message",
         "icon": "$(send)"
       },
       {
@@ -97,11 +97,6 @@
         "command": "SnsTreeView.RemoveMessageFilePath",
         "title": "Remove Message File",
         "icon": "$(trash)"
-      },
-      {
-        "command": "SnsTreeView.GetSubscriptions",
-        "title": "Get Subscriptions",
-        "icon": "$(refresh)"
       },
       {
         "command": "SnsTreeView.TestAwsConnection",
@@ -205,7 +200,7 @@
           "group": "Queue"
         },
         {
-          "command": "SnsTreeView.PublishMessage",
+          "command": "SnsTreeView.SendMessage",
           "when": "view == SnsTreeView && (viewItem == Queue || viewItem == Queue || viewItem == PublishAdhoc || viewItem == PublishFile)",
           "group": "inline"
         },
@@ -217,11 +212,6 @@
         {
           "command": "SnsTreeView.RemoveMessageFilePath",
           "when": "view == SnsTreeView && viewItem == PublishFile",
-          "group": "inline"
-        },
-        {
-          "command": "SnsTreeView.GetSubscriptions",
-          "when": "view == SnsTreeView && viewItem == SubscriptionGroup",
           "group": "inline"
         }
       ]
@@ -272,7 +262,7 @@
   "dependencies": {
     "@aws-sdk/client-cloudwatch-logs": "^3.750.0",
     "@aws-sdk/client-iam": "^3.750.0",
-    "@aws-sdk/client-sns": "^3.750.0",
+    "@aws-sdk/client-sqs": "^3.864.0",
     "@aws-sdk/client-sts": "^3.750.0",
     "@aws-sdk/credential-providers": "^3.750.0",
     "@vscode-elements/elements": "^1.13.1",

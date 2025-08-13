@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { fromNodeProviderChain } from "@aws-sdk/credential-providers";
-import { SNSClient, ListTopicsCommand } from "@aws-sdk/client-sns";
+import { SQSClient, ListQueuesCommand } from "@aws-sdk/client-sqs";
 import * as ui from "./UI";
 import { MethodResult } from './MethodResult';
 import { homedir } from "os";
@@ -8,7 +8,7 @@ import { sep } from "path";
 import { join, basename, extname, dirname } from "path";
 import { parseKnownFiles, SourceProfileInit } from "../aws-sdk/parseKnownFiles";
 import { ParsedIniData } from "@aws-sdk/types";
-import * as SnsTreeView from '../sns/SnsTreeView';
+import * as SnsTreeView from '../sqs/SqsTreeView';
 import * as fs from 'fs';
 import * as archiver from 'archiver';
 
@@ -16,8 +16,8 @@ export async function GetCredentials() {
   let credentials;
 
   try {
-    if (SnsTreeView.SnsTreeView.Current) {
-      process.env.AWS_PROFILE = SnsTreeView.SnsTreeView.Current.AwsProfile ;
+    if (SnsTreeView.SqsTreeView.Current) {
+      process.env.AWS_PROFILE = SnsTreeView.SqsTreeView.Current.AwsProfile ;
     }
     // Get credentials using the default provider chain.
     const provider = fromNodeProviderChain({ignoreCache: true});
@@ -36,58 +36,58 @@ export async function GetCredentials() {
   }
 }
 
-async function GetSNSClient(region: string) {
+async function GetSQSClient(region: string) {
   const credentials = await GetCredentials();
   
-  const sns = new SNSClient({
+  const sns = new SQSClient({
     region,
     credentials,
-    endpoint: SnsTreeView.SnsTreeView.Current?.AwsEndPoint,
+    endpoint: SnsTreeView.SqsTreeView.Current?.AwsEndPoint,
   });
   
   return sns;
 }
 
-export async function GetSnsTopicList(
+export async function GetSqsQueueList(
   region: string,
-  TopicName?: string
+  QueName?: string
 ): Promise<MethodResult<string[]>> {
   let result: MethodResult<string[]> = new MethodResult<string[]>();
   result.result = [];
 
   try {
-    const snd = await GetSNSClient(region);
+    const snd = await GetSQSClient(region);
     
-    let allTopics = [];
+    let allQues = [];
     let marker: string | undefined = undefined;
     
     // Continue fetching pages until no NextMarker is returned
     do {
-      const command:ListTopicsCommand = new ListTopicsCommand({NextToken: marker,});
-      const topicList = await snd.send(command);
-      
-      if (topicList.Topics) {
-        allTopics.push(...topicList.Topics);
+      const command:ListQueuesCommand = new ListQueuesCommand({NextToken: marker,});
+      const queList = await snd.send(command);
+
+      if (queList.QueueUrls) {
+        allQues.push(...queList.QueueUrls);
       }
       
       // Update marker to the next page (if present)
-      marker = topicList.NextToken;
+      marker = queList.NextToken;
     } while (marker);
 
     let matchingTopics;
-    if (TopicName) {
-      matchingTopics = allTopics.filter(
-        (topic) =>
-          topic.TopicArn?.includes(TopicName) || TopicName.length === 0
+    if (QueName) {
+      matchingTopics = allQues.filter(
+        (que) =>
+          que.includes(QueName) || QueName.length === 0
       );
     } else {
-      matchingTopics = allTopics;
+      matchingTopics = allQues;
     }
 
     // Extract the function names into the result
     if (matchingTopics && matchingTopics.length > 0) {
-      matchingTopics.forEach((topic) => {
-        if (topic.TopicArn) result.result.push(topic.TopicArn!);
+      matchingTopics.forEach((que) => {
+        if (que) result.result.push(que!);
       });
     }
 
@@ -102,13 +102,6 @@ export async function GetSnsTopicList(
   }
 }
 
-
-import {
-  PublishCommand,
-  PublishCommandInput,
-  PublishCommandOutput,
-} from "@aws-sdk/client-sns";
-
 export function isJsonString(jsonString: string): boolean {
   try {
     var json = ParseJson(jsonString);
@@ -121,23 +114,30 @@ export function ParseJson(jsonString: string) {
   return JSON.parse(jsonString);
 }
 
-export async function PublishMessage(
+import {
+  SendMessageCommand,
+  SendMessageCommandInput,
+  SendMessageCommandOutput,
+} from "@aws-sdk/client-sqs";
+
+
+export async function SendMessage(
   Region: string,
-  TopicArn: string,
+  QueueUrl: string,
   Message: string
-): Promise<MethodResult<PublishCommandOutput>> {
-  let result: MethodResult<PublishCommandOutput> = new MethodResult<PublishCommandOutput>();
+): Promise<MethodResult<SendMessageCommandOutput>> {
+  let result: MethodResult<SendMessageCommandOutput> = new MethodResult<SendMessageCommandOutput>();
 
   try {
-    const sns = await GetSNSClient(Region);
-  
-    const param: PublishCommandInput = {
-      TopicArn: TopicArn,
-      Message: Message
+    const sqs = await GetSQSClient(Region);
+
+    const param: SendMessageCommandInput = {
+      QueueUrl: QueueUrl,
+      MessageBody: Message
     };
 
-    const command = new PublishCommand(param);
-    const response = await sns.send(command);
+    const command = new SendMessageCommand(param);
+    const response = await sqs.send(command);
 
     result.result = response;
     result.isSuccessful = true;
@@ -145,32 +145,32 @@ export async function PublishMessage(
   } catch (error: any) {
     result.isSuccessful = false;
     result.error = error;
-    ui.showErrorMessage("api.PublishMessage Error !!!", error);
-    ui.logToOutput("api.PublishMessage Error !!!", error);
+    ui.showErrorMessage("api.SendMessage Error !!!", error);
+    ui.logToOutput("api.SendMessage Error !!!", error);
     return result;
   }
 }
 
 import {
-  GetTopicAttributesCommand,
-  GetTopicAttributesCommandInput,
-  GetTopicAttributesCommandOutput,
-} from "@aws-sdk/client-sns";
+  GetQueueAttributesCommand,
+  GetQueueAttributesCommandInput,
+  GetQueueAttributesCommandOutput,
+} from "@aws-sdk/client-sqs";
 
-export async function GetTopicAttributes(
+export async function GetQueueAttributes(
   Region: string,
-  TopicArn: string
-): Promise<MethodResult<GetTopicAttributesCommandOutput>> {
-  let result: MethodResult<GetTopicAttributesCommandOutput> = new MethodResult<GetTopicAttributesCommandOutput>();
+  QueueUrl: string
+): Promise<MethodResult<GetQueueAttributesCommandOutput>> {
+  let result: MethodResult<GetQueueAttributesCommandOutput> = new MethodResult<GetQueueAttributesCommandOutput>();
 
   try {
-    const sns = await GetSNSClient(Region);
+    const sqs = await GetSQSClient(Region);
 
-    const command = new GetTopicAttributesCommand({
-      TopicArn: TopicArn,
+    const command = new GetQueueAttributesCommand({
+      QueueUrl: QueueUrl,
     });
 
-    const response = await sns.send(command);
+    const response = await sqs.send(command);
     result.result = response;
     result.isSuccessful = true;
     return result;
@@ -179,31 +179,6 @@ export async function GetTopicAttributes(
     result.error = error;
     ui.showErrorMessage("api.GetTopicAttributes Error !!!", error);
     ui.logToOutput("api.GetTopicAttributes Error !!!", error);
-    return result;
-  }
-}
-
-import { ListSubscriptionsByTopicCommand, ListSubscriptionsByTopicCommandOutput } from "@aws-sdk/client-sns";
-export async function GetSubscriptions(
-  Region: string,
-  TopicArn: string
-): Promise<MethodResult<ListSubscriptionsByTopicCommandOutput>> {
-  let result: MethodResult<ListSubscriptionsByTopicCommandOutput> = new MethodResult<ListSubscriptionsByTopicCommandOutput>();
-
-  try {
-    const sns = await GetSNSClient(Region);
-  
-    const command = new ListSubscriptionsByTopicCommand({ TopicArn: TopicArn });
-    const response = await sns.send(command);
-
-    result.result = response;
-    result.isSuccessful = true;
-    return result;
-  } catch (error: any) {
-    result.isSuccessful = false;
-    result.error = error;
-    ui.showErrorMessage("api.GetSubscriptions Error !!!", error);
-    ui.logToOutput("api.GetSubscriptions Error !!!", error);
     return result;
   }
 }
@@ -259,7 +234,7 @@ async function GetSTSClient(region: string) {
     {
       region,
       credentials,
-      endpoint: SnsTreeView.SnsTreeView.Current?.AwsEndPoint,
+      endpoint: SnsTreeView.SqsTreeView.Current?.AwsEndPoint,
     }
   );
   return iamClient;
