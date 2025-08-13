@@ -349,6 +349,30 @@ export class SqsTreeView {
 		this.SetNodeRunning(node, false);
 	}
 
+	async ReceiveMessage(node: SqsTreeItem) {
+		ui.logToOutput('SqsTreeView.ReceiveMessage Started');
+		if(node.IsRunning) { return;}
+		this.SetNodeRunning(node, true);
+
+		let result = await api.ReceiveMessage(node.Region, node.QueueArn);
+		if(!result.isSuccessful)
+		{
+			ui.logToOutput("api.ReceiveMessage Error !!!", result.error);
+			ui.showErrorMessage('Receive Message Error !!!', result.error);
+			this.SetNodeRunning(node, false);
+			return;
+		}
+		ui.logToOutput("api.ReceiveMessage Success !!!");
+		if(result.result.Messages && result.result.Messages.length > 0) {
+			ui.logToOutput("Messages: " + JSON.stringify(result.result.Messages));
+			ui.showInfoMessage('Messages Received Successfully. Check Output Panel');
+		}
+		else{
+			ui.showInfoMessage('No Messages Received');
+		}
+		this.SetNodeRunning(node, false);
+	}
+
 	private SetNodeRunning(node: SqsTreeItem, isRunning: boolean) {
 		node.IsRunning = isRunning; node.refreshUI(); this.treeDataProvider.Refresh();
 	}

@@ -94,6 +94,11 @@
         "icon": "$(add)"
       },
       {
+        "command": "SqsTreeView.ReceiveMessage",
+        "title": "Receive Message",
+        "icon": "$(arrow-down)"
+      },
+      {
         "command": "SqsTreeView.RemoveMessageFilePath",
         "title": "Remove Message File",
         "icon": "$(trash)"
@@ -210,6 +215,11 @@
           "group": "inline"
         },
         {
+          "command": "SqsTreeView.ReceiveMessage",
+          "when": "view == SqsTreeView && viewItem == ReceiveGroup",
+          "group": "inline"
+        },
+        {
           "command": "SqsTreeView.RemoveMessageFilePath",
           "when": "view == SqsTreeView && viewItem == PublishFile",
           "group": "inline"
@@ -237,7 +247,7 @@
     "viewsWelcome": [
       {
         "view": "SqsTreeView",
-        "contents": "Please click [+] to add your SQS Queue. \n [Add Queue](command:SqsTreeView.AddTopic) \n Leave Queue name empty to get all your topics. You can enter topic name partially. \n If you can not connect after a while check your Aws Credentials, Network and Proxy settings. \n\n\n\n To Access Aws, you need to configure aws credentials. \n For more detail on Aws Credentials [Click Here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) \n For a Youtube Tutorial [Click Here](https://www.youtube.com/watch?v=SON8sY1iOBU) \n [Update Aws EndPoint](command:SqsTreeView.UpdateAwsEndPoint)"
+        "contents": "Please click [+] to add your SQS Queue. \n [Add Queue](command:SqsTreeView.AddTopic) \n Leave Queue name empty to get all your topics. You can enter queue name partially. \n If you can not connect after a while check your Aws Credentials, Network and Proxy settings. \n\n\n\n To Access Aws, you need to configure aws credentials. \n For more detail on Aws Credentials [Click Here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) \n For a Youtube Tutorial [Click Here](https://www.youtube.com/watch?v=SON8sY1iOBU) \n [Update Aws EndPoint](command:SqsTreeView.UpdateAwsEndPoint)"
       }
     ]
   },

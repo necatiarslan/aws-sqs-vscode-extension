@@ -110,6 +110,7 @@ export function isJsonString(jsonString: string): boolean {
     return false;
   }
 }
+
 export function ParseJson(jsonString: string) {
   return JSON.parse(jsonString);
 }
@@ -119,7 +120,6 @@ import {
   SendMessageCommandInput,
   SendMessageCommandOutput,
 } from "@aws-sdk/client-sqs";
-
 
 export async function SendMessage(
   Region: string,
@@ -147,6 +147,36 @@ export async function SendMessage(
     result.error = error;
     ui.showErrorMessage("api.SendMessage Error !!!", error);
     ui.logToOutput("api.SendMessage Error !!!", error);
+    return result;
+  }
+}
+
+import {ReceiveMessageCommand, ReceiveMessageCommandOutput, ReceiveMessageCommandInput} from "@aws-sdk/client-sqs";
+
+export async function ReceiveMessage(
+  Region: string,
+  QueueUrl: string,
+  MaxNumberOfMessages: number = 1,
+  WaitTimeSeconds: number = 0
+): Promise<MethodResult<ReceiveMessageCommandOutput>> {
+  let result: MethodResult<ReceiveMessageCommandOutput> = new MethodResult<ReceiveMessageCommandOutput>();
+  try {
+    const sqs = await GetSQSClient(Region);
+    const params: ReceiveMessageCommandInput = {
+      QueueUrl,
+      MaxNumberOfMessages,
+      WaitTimeSeconds,
+    };
+    const command = new ReceiveMessageCommand(params);
+    const response = await sqs.send(command);
+    result.result = response;
+    result.isSuccessful = true;
+    return result;
+  } catch (error: any) {
+    result.isSuccessful = false;
+    result.error = error;
+    ui.showErrorMessage("api.ReceiveMessage Error !!!", error);
+    ui.logToOutput("api.ReceiveMessage Error !!!", error);
     return result;
   }
 }
@@ -255,6 +285,7 @@ export async function TestAwsCredentials(): Promise<MethodResult<boolean>> {
     return result;
   }
 }
+
 export async function TestAwsConnection(Region: string="us-east-1"): Promise<MethodResult<boolean>> {
   let result: MethodResult<boolean> = new MethodResult<boolean>();
 
@@ -273,7 +304,6 @@ export async function TestAwsConnection(Region: string="us-east-1"): Promise<Met
     return result;
   }
 }
-
 
 export async function GetAwsProfileList(): Promise<MethodResult<string[]>> {
   ui.logToOutput("api.GetAwsProfileList Started");

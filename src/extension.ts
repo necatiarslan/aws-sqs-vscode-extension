@@ -76,6 +76,10 @@ export function activate(context: vscode.ExtensionContext) {
 		treeView.SendMessage(node);
 	});
 
+	vscode.commands.registerCommand('SqsTreeView.ReceiveMessage', (node: SqsTreeItem) => {
+		treeView.ReceiveMessage(node);
+	});
+
 	vscode.commands.registerCommand('SqsTreeView.SqsView', (node: SqsTreeItem) => {
 		treeView.SqsView(node);
 	});
