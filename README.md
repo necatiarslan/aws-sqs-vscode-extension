@@ -55,9 +55,7 @@ https://github.com/necatiarslan/aws-sqs-vscode-extension/issues/new
 
 
 ## Todo
-- Receive messages
 - Display
-  - Policy
   - Sqs Subscriptions
   - Lambda Triggers
   - EventBridge Pipes
