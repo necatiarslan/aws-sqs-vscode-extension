@@ -1,13 +1,13 @@
 # Aws Sqs Extension for VSCode
 ![screenshoot](media/ext-main.png)
 
-🚀 **Aws Sqs Extension for VSCode** allows you to interact with your Aws Sqs Queue directly within VSCode. This extension streamlines the development, testing, and debugging of Sns Queue, providing an intuitive interface for publishing messages within your favorite code editor.  
+🚀 **Aws Sqs Extension for VSCode** allows you to interact with your Aws Sqs Queue directly within VSCode. This extension streamlines the development, testing, and debugging of Sqs Queue, providing an intuitive interface for publishing messages within your favorite code editor.  
 
 ## ✨ Features  
 
 - **Send Messages**: Send messages to Aws Sqs Queue with ease. 
 - **Manage Messages**: Save and reuse messages for later use.
-- **Subscriptions**: Monitor subscriptions to Aws Sqs Queue.
+- **Receive Messages**: Receive messages from Aws Sqs Queue.
 - **AWS Profile Support**: Work with multiple AWS profiles seamlessly.  
 
 ## Sponsor Me
@@ -55,7 +55,15 @@ https://github.com/necatiarslan/aws-sqs-vscode-extension/issues/new
 
 
 ## Todo
-- 
+- Receive messages
+- Display
+  - Queue Name, Type, Url, ARN, Dead-letter Queue Enabled, Created Date, Last Updated Date, Max Message Size
+  - Policy
+  - SNS Subscriptions
+  - Lambda Triggers
+  - EventBridge Pipes
+  - Dead-letter Queue
+  - Tags
 
 ## Nice To Have
 - 

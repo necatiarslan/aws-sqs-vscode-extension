@@ -43,15 +43,15 @@ export class SqsTreeItem extends vscode.TreeItem {
 			this.iconPath = new vscode.ThemeIcon('mail');
 			this.contextValue = "PublishFile"
 		}
-		else if(this.TreeItemType === TreeItemType.SubscriptionGroup)
+		else if(this.TreeItemType === TreeItemType.ReceiveGroup)
 		{
 			this.iconPath = new vscode.ThemeIcon('organization');
-			this.contextValue = "SubscriptionGroup"
+			this.contextValue = "ReceiveGroup"
 		}
-		else if(this.TreeItemType === TreeItemType.Subscription)
+		else if(this.TreeItemType === TreeItemType.ReceivedMessage)
 		{
 			this.iconPath = new vscode.ThemeIcon('person');
-			this.contextValue = "Subscription"
+			this.contextValue = "ReceivedMessage"
 		}
 		else
 		{
@@ -121,7 +121,7 @@ export enum TreeItemType{
 	PublishGroup = 2,
 	PublishAdhoc= 3,
 	PublishFile= 4,
-	SubscriptionGroup = 5,
-	Subscription = 6,
+	ReceiveGroup = 5,
+	ReceivedMessage = 6,
 	Other = 99
 }
