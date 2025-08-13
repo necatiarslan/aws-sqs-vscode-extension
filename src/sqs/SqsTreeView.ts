@@ -303,6 +303,31 @@ export class SqsTreeView {
 		ui.showInfoMessage('Work In Progress');
 	}
 
+	async PreviewPolicy(node: SqsTreeItem) {
+		ui.logToOutput('SqsTreeView.PreviewPolicy Started');
+		if(node.TreeItemType !== TreeItemType.Policy) { return;}
+		//call api.GetQueuePolicy
+		let result = await api.GetQueuePolicy(node.Region, node.QueueArn);
+		if(!result.isSuccessful)
+		{
+			ui.logToOutput("api.GetQueuePolicy Error !!!", result.error);
+			ui.showErrorMessage('Preview Policy Error !!!', result.error);
+			return;
+		}
+		if(result.result)
+		{
+			ui.logToOutput("api.GetQueuePolicy Success !!!");
+			ui.ShowTextDocument(result.result);
+		}
+		else
+		{
+			ui.logToOutput("api.GetQueuePolicy No Policy Found !!!");
+			ui.showInfoMessage('No Policy Found');
+			return;
+		}
+		
+	}
+
 	async SendMessage(node: SqsTreeItem) {
 		ui.logToOutput('SqsTreeView.SendMessage Started');
 		if(node.IsRunning) { return;}

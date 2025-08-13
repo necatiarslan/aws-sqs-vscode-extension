@@ -57,7 +57,6 @@ https://github.com/necatiarslan/aws-sqs-vscode-extension/issues/new
 ## Todo
 - Receive messages
 - Display
-  - Queue Name, Type, Url, ARN, Dead-letter Queue Enabled, Created Date, Last Updated Date, Max Message Size
   - Policy
   - Sqs Subscriptions
   - Lambda Triggers

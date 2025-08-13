@@ -216,6 +216,30 @@ export async function ReceiveMessage(
   }
 }
 
+export async function GetQueuePolicy(
+  region: string,
+  queueUrl: string
+): Promise<MethodResult<string | undefined>> {
+  let result: MethodResult<string | undefined> = new MethodResult<string | undefined>();
+  try {
+    const sqs = await GetSQSClient(region);
+    const command = new GetQueueAttributesCommand({
+      QueueUrl: queueUrl,
+      AttributeNames: ["Policy"]
+    });
+    const response = await sqs.send(command);
+    result.result = response.Attributes?.Policy;
+    result.isSuccessful = true;
+    return result;
+  } catch (error: any) {
+    result.isSuccessful = false;
+    result.error = error;
+    ui.showErrorMessage("api.GetQueuePolicy Error !!!", error);
+    ui.logToOutput("api.GetQueuePolicy Error !!!", error);
+    return result;
+  }
+}
+
 export async function ZipTextFile(inputPath: string, outputZipPath?: string): Promise<MethodResult<string>> {
   let result:MethodResult<string> = new MethodResult<string>();
 

@@ -84,6 +84,10 @@ export function activate(context: vscode.ExtensionContext) {
 		treeView.SqsView(node);
 	});
 
+	vscode.commands.registerCommand('SqsTreeView.PreviewPolicy', (node: SqsTreeItem) => {
+		treeView.PreviewPolicy(node);
+	});
+
 	vscode.commands.registerCommand('SqsTreeView.RemoveMessageFilePath', async (node: SqsTreeItem) => {
 		await treeView.RemoveMessageFilePath(node);
 	});

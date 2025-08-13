@@ -53,6 +53,11 @@ export class SqsTreeItem extends vscode.TreeItem {
 			this.iconPath = new vscode.ThemeIcon('person');
 			this.contextValue = "ReceivedMessage"
 		}
+		else if(this.TreeItemType === TreeItemType.Policy)
+		{
+			this.iconPath = new vscode.ThemeIcon('shield');
+			this.contextValue = "Policy"
+		}
 		else
 		{
 			this.iconPath = new vscode.ThemeIcon('circle-outline');
@@ -125,5 +130,6 @@ export enum TreeItemType{
 	ReceivedMessage = 6,
 	DetailGroup = 7,
 	DetailItem = 8,
+	Policy = 9,
 	Other = 99
 }

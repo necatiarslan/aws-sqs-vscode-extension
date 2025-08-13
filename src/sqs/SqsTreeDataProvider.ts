@@ -99,6 +99,13 @@ export class SqsTreeDataProvider implements vscode.TreeDataProvider<SqsTreeItem>
 		detailGroup.Parent = treeItem;
 		treeItem.Children.push(detailGroup);
 
+		let policy = new SqsTreeItem("Policy", TreeItemType.Policy);
+		policy.QueueArn = treeItem.QueueArn;
+		policy.Region = treeItem.Region;
+		policy.collapsibleState = vscode.TreeItemCollapsibleState.None;
+		policy.Parent = treeItem;
+		treeItem.Children.push(policy);
+
 		let pubItem = new SqsTreeItem("Send", TreeItemType.PublishGroup);
 		pubItem.QueueArn = treeItem.QueueArn;
 		pubItem.Region = treeItem.Region;
