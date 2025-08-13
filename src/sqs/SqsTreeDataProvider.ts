@@ -2,6 +2,8 @@
 import * as vscode from 'vscode';
 import { SqsTreeItem, TreeItemType } from './SqsTreeItem';
 import { SqsTreeView } from './SqsTreeView';
+import * as api from '../common/API';
+
 export class SqsTreeDataProvider implements vscode.TreeDataProvider<SqsTreeItem>
 {
 	private _onDidChangeTreeData: vscode.EventEmitter<SqsTreeItem | undefined | void> = new vscode.EventEmitter<SqsTreeItem | undefined | void>();
@@ -76,20 +78,21 @@ export class SqsTreeDataProvider implements vscode.TreeDataProvider<SqsTreeItem>
 	}
 
 	GetQueueName(QueueArn:string):string{
-		const topicName = QueueArn.split(":").pop();
-		if(!topicName) { return QueueArn; }
-		return topicName;
+		if(!QueueArn) { return "Undefined Queue"; }
+		const queueName = QueueArn.split("/").pop();
+		if(!queueName) { return QueueArn; }
+		return queueName;
 	}
 
 	private NewSqsNode(Region: string, QueueArn: string) : SqsTreeItem
 	{
-		let topicName = this.GetQueueName(QueueArn);
-		let treeItem = new SqsTreeItem(topicName, TreeItemType.Queue);
+		let queueName = this.GetQueueName(QueueArn);
+		let treeItem = new SqsTreeItem(queueName, TreeItemType.Queue);
 		treeItem.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
 		treeItem.Region = Region;
 		treeItem.QueueArn = QueueArn;
 
-		let detailGroup = new SqsTreeItem("Detail", TreeItemType.DetailGroup);
+		let detailGroup = new SqsTreeItem("Details", TreeItemType.DetailGroup);
 		detailGroup.QueueArn = treeItem.QueueArn;
 		detailGroup.Region = treeItem.Region;
 		detailGroup.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
@@ -124,6 +127,17 @@ export class SqsTreeDataProvider implements vscode.TreeDataProvider<SqsTreeItem>
 		subItem.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
 		subItem.Parent = treeItem;
 		treeItem.Children.push(subItem);
+
+		//call API.GetQueueDetails
+		api.GetQueueDetails(Region, QueueArn).then(details => {
+			for (let [key, value] of Object.entries(details)) {
+				let detailItem = new SqsTreeItem(`${key}: ${value}`, TreeItemType.DetailItem);
+				detailItem.QueueArn = treeItem.QueueArn;
+				detailItem.Region = treeItem.Region;
+				detailItem.Parent = detailGroup;
+				detailGroup.Children.push(detailItem);
+			}
+		});
 
 		return treeItem;
 	}
