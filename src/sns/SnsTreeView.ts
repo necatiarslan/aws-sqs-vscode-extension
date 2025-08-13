@@ -69,7 +69,7 @@ export class SnsTreeView {
 
 		vscode.window.withProgress({
 			location: vscode.ProgressLocation.Window,
-			title: "Aws Sns: Loading...",
+			title: "Aws Sqs: Loading...",
 		}, (progress, token) => {
 			progress.report({ increment: 0 });
 
@@ -149,7 +149,7 @@ export class SnsTreeView {
 	}
 
 	async SetViewTitle(){
-		this.view.title = "Aws Sns";
+		this.view.title = "Aws Sqs";
 	}
 
 	SaveState() {
@@ -179,7 +179,7 @@ export class SnsTreeView {
 		catch (error:any) 
 		{
 			ui.logToOutput("SnsTreeView.loadState AwsEndPoint Error !!!", error);
-			ui.showErrorMessage("Aws Sns Load State AwsEndPoint Error !!!", error);
+			ui.showErrorMessage("Aws Sqs Load State AwsEndPoint Error !!!", error);
 		}
 
 		try {
@@ -189,7 +189,7 @@ export class SnsTreeView {
 		catch (error:any) 
 		{
 			ui.logToOutput("SnsTreeView.loadState AwsProfile Error !!!", error);
-			ui.showErrorMessage("Aws Sns Load State AwsProfile Error !!!", error);
+			ui.showErrorMessage("Aws Sqs Load State AwsProfile Error !!!", error);
 		}
 
 		try {
@@ -199,7 +199,7 @@ export class SnsTreeView {
 		catch (error:any) 
 		{
 			ui.logToOutput("SnsTreeView.loadState FilterString Error !!!", error);
-			ui.showErrorMessage("Aws Sns Load State FilterString Error !!!", error);
+			ui.showErrorMessage("Aws Sqs Load State FilterString Error !!!", error);
 		}
 
 		try {
@@ -209,7 +209,7 @@ export class SnsTreeView {
 		catch (error:any) 
 		{
 			ui.logToOutput("SnsTreeView.loadState Error !!!", error);
-			ui.showErrorMessage("Aws Sns Load State Error !!!", error);
+			ui.showErrorMessage("Aws Sqs Load State Error !!!", error);
 		}
 
 		try {
@@ -219,7 +219,7 @@ export class SnsTreeView {
 		catch (error:any) 
 		{
 			ui.logToOutput("SnsTreeView.loadState isShowHiddenNodes Error !!!", error);
-			ui.showErrorMessage("Aws Sns Load State isShowHiddenNodes Error !!!", error);
+			ui.showErrorMessage("Aws Sqs Load State isShowHiddenNodes Error !!!", error);
 		}
 
 		try {
@@ -232,7 +232,7 @@ export class SnsTreeView {
 		catch (error:any) 
 		{
 			ui.logToOutput("SnsTreeView.loadState SnsList Error !!!", error);
-			ui.showErrorMessage("Aws Sns Load State SnsList Error !!!", error);
+			ui.showErrorMessage("Aws Sqs Load State SnsList Error !!!", error);
 		}
 
 	}
@@ -262,13 +262,13 @@ export class SnsTreeView {
 		let selectedRegion = await vscode.window.showInputBox({ placeHolder: 'Enter Region Eg: us-east-1', value: 'us-east-1' });
 		if(selectedRegion===undefined){ return; }
 
-		let selectedTopicName = await vscode.window.showInputBox({ placeHolder: 'Enter Topic Name / Search Text' });
+		let selectedTopicName = await vscode.window.showInputBox({ placeHolder: 'Enter Queue Name / Search Text' });
 		if(selectedTopicName===undefined){ return; }
 
 		var resultTopic = await api.GetSnsTopicList(selectedRegion, selectedTopicName);
 		if(!resultTopic.isSuccessful){ return; }
 
-		let selectedTopicList = await vscode.window.showQuickPick(resultTopic.result, {canPickMany:true, placeHolder: 'Select Topic(s)'});
+		let selectedTopicList = await vscode.window.showQuickPick(resultTopic.result, {canPickMany:true, placeHolder: 'Select Queue(s)'});
 		if(!selectedTopicList || selectedTopicList.length===0){ return; }
 
 		for(var selectedTopic of selectedTopicList)
@@ -281,7 +281,7 @@ export class SnsTreeView {
 	async RemoveTopic(node: SnsTreeItem) {
 		ui.logToOutput('SnsTreeView.RemoveTopic Started');
 		
-		if(node.TreeItemType !== TreeItemType.Topic) { return;}
+		if(node.TreeItemType !== TreeItemType.Queue) { return;}
 
 		this.treeDataProvider.RemoveTopic(node.Region, node.TopicArn);		
 		this.SaveState();
@@ -290,7 +290,7 @@ export class SnsTreeView {
 	async Goto(node: SnsTreeItem) {
 		ui.logToOutput('SnsTreeView.Goto Started');
 		
-		if(node.TreeItemType !== TreeItemType.Topic) { return;}
+		if(node.TreeItemType !== TreeItemType.Queue) { return;}
 
 		ui.showInfoMessage("Work In Progress");
 		
@@ -298,7 +298,7 @@ export class SnsTreeView {
 
 	async SnsView(node: SnsTreeItem) {
 		ui.logToOutput('SnsTreeView.SnsView Started');
-		if(node.TreeItemType !== TreeItemType.Topic) { return;}
+		if(node.TreeItemType !== TreeItemType.Queue) { return;}
 
 		ui.showInfoMessage('Work In Progress');
 	}

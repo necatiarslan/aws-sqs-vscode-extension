@@ -4,7 +4,7 @@ import { SnsTreeView } from './sns/SnsTreeView';
 import { SnsTreeItem } from './sns/SnsTreeItem';
 
 export function activate(context: vscode.ExtensionContext) {
-	ui.logToOutput('Aws Sns Extension activation started');
+	ui.logToOutput('Aws Sqs Extension activation started');
 
 	let treeView:SnsTreeView = new SnsTreeView(context);
 
@@ -92,9 +92,9 @@ export function activate(context: vscode.ExtensionContext) {
 		await treeView.GetSubscriptions(node);
 	});
 
-	ui.logToOutput('Aws Sns Extension activation completed');
+	ui.logToOutput('Aws Sqs Extension activation completed');
 }
 
 export function deactivate() {
-	ui.logToOutput('Aws Sns is now de-active!');
+	ui.logToOutput('Aws Sqs is now de-active!');
 }

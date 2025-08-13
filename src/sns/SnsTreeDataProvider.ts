@@ -86,7 +86,7 @@ export class SnsTreeDataProvider implements vscode.TreeDataProvider<SnsTreeItem>
 	private NewSnsNode(Region: string, TopicArn: string) : SnsTreeItem
 	{
 		let topicName = this.GetTopicName(TopicArn);
-		let treeItem = new SnsTreeItem(topicName, TreeItemType.Topic);
+		let treeItem = new SnsTreeItem(topicName, TreeItemType.Queue);
 		treeItem.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
 		treeItem.Region = Region;
 		treeItem.TopicArn = TopicArn;

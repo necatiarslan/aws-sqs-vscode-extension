@@ -23,10 +23,10 @@ export class SnsTreeItem extends vscode.TreeItem {
 
 	public refreshUI() {
 
-		if(this.TreeItemType === TreeItemType.Topic)
+		if(this.TreeItemType === TreeItemType.Queue)
 		{
 			this.iconPath = new vscode.ThemeIcon('package'); // inbox
-			this.contextValue = "Topic"
+			this.contextValue = "Queue"
 		}
 		else if(this.TreeItemType === TreeItemType.PublishGroup)
 		{
@@ -117,7 +117,7 @@ export class SnsTreeItem extends vscode.TreeItem {
 }
 
 export enum TreeItemType{
-	Topic = 1,
+	Queue = 1,
 	PublishGroup = 2,
 	PublishAdhoc= 3,
 	PublishFile= 4,

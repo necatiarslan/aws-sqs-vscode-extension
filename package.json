@@ -1,6 +1,6 @@
 {
   "name": "aws-sqs-vscode-extension",
-  "displayName": "Aws Sns",
+  "displayName": "Aws Sqs",
   "description": "Manage & Monitor & Push Messages to Aws Sqs",
   "version": "1.0.0",
   "publisher": "NecatiARSLAN",
@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://github.com/necatiarslan/aws-sqs-vscode-extension"
   },
-  "icon": "media/aws-sns-logo-extension.png",
+  "icon": "media/aws-sqs-logo-extension.png",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -17,7 +17,7 @@
   ],
   "keywords": [
     "AWS",
-    "Sns",
+    "Sqs",
     "Simple Notification Service"
   ],
   "activationEvents": [],
@@ -62,12 +62,12 @@
       },
       {
         "command": "SnsTreeView.AddTopic",
-        "title": "Add Topic",
+        "title": "Add Queue",
         "icon": "$(add)"
       },
       {
         "command": "SnsTreeView.RemoveTopic",
-        "title": "Remove Topic"
+        "title": "Remove Queue"
       },
       {
         "command": "SnsTreeView.Goto",
@@ -85,7 +85,7 @@
       },
       {
         "command": "SnsTreeView.SnsView",
-        "title": "Sns View",
+        "title": "Sqs View",
         "icon": "$(preview)"
       },
       {
@@ -176,37 +176,37 @@
       "view/item/context": [
         {
           "command": "SnsTreeView.AddToFav",
-          "when": "view == SnsTreeView && viewItem == Topic",
+          "when": "view == SnsTreeView && viewItem == Queue",
           "group": "Filter"
         },
         {
           "command": "SnsTreeView.DeleteFromFav",
-          "when": "view == SnsTreeView && viewItem == Topic",
+          "when": "view == SnsTreeView && viewItem == Queue",
           "group": "Filter"
         },
         {
           "command": "SnsTreeView.HideNode",
-          "when": "view == SnsTreeView && viewItem == Topic",
+          "when": "view == SnsTreeView && viewItem == Queue",
           "group": "Filter"
         },
         {
           "command": "SnsTreeView.UnHideNode",
-          "when": "view == SnsTreeView && viewItem == Topic",
+          "when": "view == SnsTreeView && viewItem == Queue",
           "group": "Filter"
         },
         {
           "command": "SnsTreeView.RemoveTopic",
-          "when": "view == SnsTreeView && viewItem == Topic",
-          "group": "Topic"
+          "when": "view == SnsTreeView && viewItem == Queue",
+          "group": "Queue"
         },
         {
           "command": "SnsTreeView.Goto",
-          "when": "view == SnsTreeView && viewItem == Topic",
-          "group": "Topic"
+          "when": "view == SnsTreeView && viewItem == Queue",
+          "group": "Queue"
         },
         {
           "command": "SnsTreeView.PublishMessage",
-          "when": "view == SnsTreeView && (viewItem == Topic || viewItem == Topic || viewItem == PublishAdhoc || viewItem == PublishFile)",
+          "when": "view == SnsTreeView && (viewItem == Queue || viewItem == Queue || viewItem == PublishAdhoc || viewItem == PublishFile)",
           "group": "inline"
         },
         {
@@ -230,8 +230,8 @@
       "activitybar": [
         {
           "id": "aws-sqs-vscode-extension",
-          "title": "Aws Sns",
-          "icon": "media/aws-sns-logo-activitybar.png"
+          "title": "Aws Sqs",
+          "icon": "media/aws-sqs-logo-activitybar.png"
         }
       ]
     },
@@ -239,15 +239,15 @@
       "aws-sqs-vscode-extension": [
         {
           "id": "SnsTreeView",
-          "name": "Aws Sns",
-          "icon": "media/aws-sns-logo-activitybar.png"
+          "name": "Aws Sqs",
+          "icon": "media/aws-sqs-logo-activitybar.png"
         }
       ]
     },
     "viewsWelcome": [
       {
         "view": "SnsTreeView",
-        "contents": "Please click [+] to add your SNS Topics. \n [Add Topic](command:SnsTreeView.AddTopic) \n Leave Topic name empty to get all your topics. You can enter topic name partially. \n If you can not connect after a while check your Aws Credentials, Network and Proxy settings. \n\n\n\n To Access Aws, you need to configure aws credentials. \n For more detail on Aws Credentials [Click Here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) \n For a Youtube Tutorial [Click Here](https://www.youtube.com/watch?v=SON8sY1iOBU) \n [Update Aws EndPoint](command:SnsTreeView.UpdateAwsEndPoint)"
+        "contents": "Please click [+] to add your SQS Queue. \n [Add Queue](command:SnsTreeView.AddTopic) \n Leave Queue name empty to get all your topics. You can enter topic name partially. \n If you can not connect after a while check your Aws Credentials, Network and Proxy settings. \n\n\n\n To Access Aws, you need to configure aws credentials. \n For more detail on Aws Credentials [Click Here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) \n For a Youtube Tutorial [Click Here](https://www.youtube.com/watch?v=SON8sY1iOBU) \n [Update Aws EndPoint](command:SnsTreeView.UpdateAwsEndPoint)"
       }
     ]
   },

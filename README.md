@@ -1,13 +1,13 @@
-# Aws Sns Extension for VSCode
+# Aws Sqs Extension for VSCode
 ![screenshoot](media/ext-main.png)
 
-🚀 **AWS Sns Extension for VSCode** allows you to interact with your AWS Sns Topics directly within VSCode. This extension streamlines the development, testing, and debugging of Sns Topics, providing an intuitive interface for publishing messages within your favorite code editor.  
+🚀 **Aws Sqs Extension for VSCode** allows you to interact with your Aws Sqs Queue directly within VSCode. This extension streamlines the development, testing, and debugging of Sns Queue, providing an intuitive interface for publishing messages within your favorite code editor.  
 
 ## ✨ Features  
 
-- **Publish Messages**: Publish messages to AWS Sns Topics with ease. 
+- **Publish Messages**: Publish messages to Aws Sqs Queue with ease. 
 - **Manage Messages**: Save and reuse messages for later use.
-- **Subscriptions**: Monitor subscriptions to AWS Sns Topics.
+- **Subscriptions**: Monitor subscriptions to Aws Sqs Queue.
 - **AWS Profile Support**: Work with multiple AWS profiles seamlessly.  
 
 ## Sponsor Me
