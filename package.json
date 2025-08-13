@@ -1,0 +1,283 @@
+{
+  "name": "aws-sqs-vscode-extension",
+  "displayName": "Aws Sns",
+  "description": "Manage & Monitor & Push Messages to Aws Sqs",
+  "version": "1.0.0",
+  "publisher": "NecatiARSLAN",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/necatiarslan/aws-sqs-vscode-extension"
+  },
+  "icon": "media/aws-sns-logo-extension.png",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "AWS",
+    "Sns",
+    "Simple Notification Service"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "SnsTreeView.Refresh",
+        "title": "Refresh",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "SnsTreeView.Filter",
+        "title": "Filter",
+        "icon": "$(filter)"
+      },
+      {
+        "command": "SnsTreeView.ShowOnlyFavorite",
+        "title": "Show Only Favorite",
+        "icon": "$(bookmark)"
+      },
+      {
+        "command": "SnsTreeView.ShowHiddenNodes",
+        "title": "Show Hidden Nodes",
+        "icon": "$(eye-closed)"
+      },
+      {
+        "command": "SnsTreeView.AddToFav",
+        "title": "Fav"
+      },
+      {
+        "command": "SnsTreeView.DeleteFromFav",
+        "title": "UnFav"
+      },
+      {
+        "command": "SnsTreeView.HideNode",
+        "title": "Hide"
+      },
+      {
+        "command": "SnsTreeView.UnHideNode",
+        "title": "UnHide"
+      },
+      {
+        "command": "SnsTreeView.AddTopic",
+        "title": "Add Topic",
+        "icon": "$(add)"
+      },
+      {
+        "command": "SnsTreeView.RemoveTopic",
+        "title": "Remove Topic"
+      },
+      {
+        "command": "SnsTreeView.Goto",
+        "title": "Goto Aws Console"
+      },
+      {
+        "command": "SnsTreeView.SelectAwsProfile",
+        "title": "Select Aws Profile",
+        "icon": "$(account)"
+      },
+      {
+        "command": "SnsTreeView.PublishMessage",
+        "title": "Publish Message",
+        "icon": "$(send)"
+      },
+      {
+        "command": "SnsTreeView.SnsView",
+        "title": "Sns View",
+        "icon": "$(preview)"
+      },
+      {
+        "command": "SnsTreeView.AddMessageFilePath",
+        "title": "Add Message File",
+        "icon": "$(add)"
+      },
+      {
+        "command": "SnsTreeView.RemoveMessageFilePath",
+        "title": "Remove Message File",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "SnsTreeView.GetSubscriptions",
+        "title": "Get Subscriptions",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "SnsTreeView.TestAwsConnection",
+        "title": "Test Aws Connection"
+      },
+      {
+        "command": "SnsTreeView.UpdateAwsEndPoint",
+        "title": "Update Aws EndPoint"
+      },
+      {
+        "command": "SnsTreeView.Donate",
+        "title": "Donate"
+      },
+      {
+        "command": "SnsTreeView.BugAndNewFeature",
+        "title": "Bug and New Feature"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "SnsTreeView.ShowOnlyFavorite",
+          "when": "view == SnsTreeView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "SnsTreeView.ShowHiddenNodes",
+          "when": "view == SnsTreeView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "SnsTreeView.Filter",
+          "when": "view == SnsTreeView",
+          "group": "navigation@3"
+        },
+        {
+          "command": "SnsTreeView.AddTopic",
+          "when": "view == SnsTreeView",
+          "group": "navigation@4"
+        },
+        {
+          "command": "SnsTreeView.SelectAwsProfile",
+          "when": "view == SnsTreeView",
+          "group": "navigation@6"
+        },
+        {
+          "command": "SnsTreeView.Refresh",
+          "when": "view == SnsTreeView",
+          "group": "navigation@7"
+        },
+        {
+          "command": "SnsTreeView.TestAwsConnection",
+          "when": "view == SnsTreeView",
+          "group": "other"
+        },
+        {
+          "command": "SnsTreeView.UpdateAwsEndPoint",
+          "when": "view == SnsTreeView",
+          "group": "other"
+        },
+        {
+          "command": "SnsTreeView.Donate",
+          "when": "view == SnsTreeView",
+          "group": "other"
+        },
+        {
+          "command": "SnsTreeView.BugAndNewFeature",
+          "when": "view == SnsTreeView",
+          "group": "other"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "SnsTreeView.AddToFav",
+          "when": "view == SnsTreeView && viewItem == Topic",
+          "group": "Filter"
+        },
+        {
+          "command": "SnsTreeView.DeleteFromFav",
+          "when": "view == SnsTreeView && viewItem == Topic",
+          "group": "Filter"
+        },
+        {
+          "command": "SnsTreeView.HideNode",
+          "when": "view == SnsTreeView && viewItem == Topic",
+          "group": "Filter"
+        },
+        {
+          "command": "SnsTreeView.UnHideNode",
+          "when": "view == SnsTreeView && viewItem == Topic",
+          "group": "Filter"
+        },
+        {
+          "command": "SnsTreeView.RemoveTopic",
+          "when": "view == SnsTreeView && viewItem == Topic",
+          "group": "Topic"
+        },
+        {
+          "command": "SnsTreeView.Goto",
+          "when": "view == SnsTreeView && viewItem == Topic",
+          "group": "Topic"
+        },
+        {
+          "command": "SnsTreeView.PublishMessage",
+          "when": "view == SnsTreeView && (viewItem == Topic || viewItem == Topic || viewItem == PublishAdhoc || viewItem == PublishFile)",
+          "group": "inline"
+        },
+        {
+          "command": "SnsTreeView.AddMessageFilePath",
+          "when": "view == SnsTreeView && viewItem == PublishGroup",
+          "group": "inline"
+        },
+        {
+          "command": "SnsTreeView.RemoveMessageFilePath",
+          "when": "view == SnsTreeView && viewItem == PublishFile",
+          "group": "inline"
+        },
+        {
+          "command": "SnsTreeView.GetSubscriptions",
+          "when": "view == SnsTreeView && viewItem == SubscriptionGroup",
+          "group": "inline"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "aws-sqs-vscode-extension",
+          "title": "Aws Sns",
+          "icon": "media/aws-sns-logo-activitybar.png"
+        }
+      ]
+    },
+    "views": {
+      "aws-sqs-vscode-extension": [
+        {
+          "id": "SnsTreeView",
+          "name": "Aws Sns",
+          "icon": "media/aws-sns-logo-activitybar.png"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "SnsTreeView",
+        "contents": "Please click [+] to add your SNS Topics. \n [Add Topic](command:SnsTreeView.AddTopic) \n Leave Topic name empty to get all your topics. You can enter topic name partially. \n If you can not connect after a while check your Aws Credentials, Network and Proxy settings. \n\n\n\n To Access Aws, you need to configure aws credentials. \n For more detail on Aws Credentials [Click Here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) \n For a Youtube Tutorial [Click Here](https://www.youtube.com/watch?v=SON8sY1iOBU) \n [Update Aws EndPoint](command:SnsTreeView.UpdateAwsEndPoint)"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/archiver": "^6.0.2",
+    "@types/node": "^18.11.3",
+    "@types/vscode": "^1.71.0",
+    "@vscode/test-electron": "^2.1.5",
+    "eslint": "^8.18.0",
+    "glob": "^11.0.1",
+    "mocha": "^11.1.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cloudwatch-logs": "^3.750.0",
+    "@aws-sdk/client-iam": "^3.750.0",
+    "@aws-sdk/client-sns": "^3.750.0",
+    "@aws-sdk/client-sts": "^3.750.0",
+    "@aws-sdk/credential-providers": "^3.750.0",
+    "@vscode-elements/elements": "^1.13.1",
+    "@vscode/codicons": "^0.0.36",
+    "archiver": "^7.0.1",
+    "tmp": "^0.2.3"
+  }
+}
