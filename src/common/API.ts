@@ -216,6 +216,38 @@ export async function ReceiveMessage(
   }
 }
 
+import {
+  DeleteMessageCommand,
+  DeleteMessageCommandInput,
+  DeleteMessageCommandOutput,
+} from "@aws-sdk/client-sqs";
+
+export async function DeleteMessage(
+  Region: string,
+  QueueUrl: string,
+  ReceiptHandle: string
+): Promise<MethodResult<DeleteMessageCommandOutput>> {
+  let result: MethodResult<DeleteMessageCommandOutput> = new MethodResult<DeleteMessageCommandOutput>();
+  try {
+    const sqs = await GetSQSClient(Region);
+    const params: DeleteMessageCommandInput = {
+      QueueUrl,
+      ReceiptHandle,
+    };
+    const command = new DeleteMessageCommand(params);
+    const response = await sqs.send(command);
+    result.result = response;
+    result.isSuccessful = true;
+    return result;
+  } catch (error: any) {
+    result.isSuccessful = false;
+    result.error = error;
+    ui.showErrorMessage("api.DeleteMessage Error !!!", error);
+    ui.logToOutput("api.DeleteMessage Error !!!", error);
+    return result;
+  }
+}
+
 export async function GetQueuePolicy(
   region: string,
   queueUrl: string

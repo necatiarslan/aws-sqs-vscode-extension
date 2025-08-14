@@ -8,6 +8,7 @@
 - **Send Messages**: Send messages to Aws Sqs Queue with ease. 
 - **Manage Messages**: Save and reuse messages for later use.
 - **Receive Messages**: Receive messages from Aws Sqs Queue.
+- **Delete Messages**: Delete messages from Aws Sqs Queue.
 - **AWS Profile Support**: Work with multiple AWS profiles seamlessly.  
 
 ## Sponsor Me

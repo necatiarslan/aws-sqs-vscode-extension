@@ -389,12 +389,41 @@ export class SqsTreeView {
 		}
 		ui.logToOutput("api.ReceiveMessage Success !!!");
 		if(result.result.Messages && result.result.Messages.length > 0) {
-			ui.logToOutput("Messages: " + JSON.stringify(result.result.Messages));
-			ui.showInfoMessage('Messages Received Successfully. Check Output Panel');
+			for (let message of result.result.Messages) {
+				this.treeDataProvider.AddNewReceivedMessageNode(node, node.Region, node.QueueArn, message);
+			}
+			ui.showInfoMessage('Messages Received: ' + result.result.Messages.length);
 		}
 		else{
 			ui.showInfoMessage('No Messages Received');
 		}
+		this.SetNodeRunning(node, false);
+	}
+
+	async PreviewMessage(node: SqsTreeItem) {
+		ui.logToOutput('SqsTreeView.PreviewMessage Started');
+		if(!(node.TreeItemType == TreeItemType.ReceivedMessage || node.TreeItemType == TreeItemType.DeletedMessage)) { return;}
+		if(!node.Body) { return; }
+		ui.ShowTextDocument(node.Body);
+	}
+
+	async DeleteMessage(node: SqsTreeItem) {
+		ui.logToOutput('SqsTreeView.DeleteMessage Started');
+		if(node.TreeItemType !== TreeItemType.ReceivedMessage) { return;}
+		if(!node.ReceiptHandle) { return; }
+		this.SetNodeRunning(node, true);
+		let result = await api.DeleteMessage(node.Region, node.QueueArn, node.ReceiptHandle);
+		if(!result.isSuccessful)
+		{
+			ui.logToOutput("api.DeleteMessage Error !!!", result.error);
+			ui.showErrorMessage('Delete Message Error !!!', result.error);
+			this.SetNodeRunning(node, false);
+			return;
+		}
+		node.TreeItemType = TreeItemType.DeletedMessage;
+		ui.logToOutput("api.DeleteMessage Success !!!");
+		ui.showInfoMessage('Message Deleted Successfully');
+		this.treeDataProvider.Refresh();
 		this.SetNodeRunning(node, false);
 	}
 

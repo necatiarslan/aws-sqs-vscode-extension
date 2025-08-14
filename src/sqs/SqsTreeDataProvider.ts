@@ -3,6 +3,8 @@ import * as vscode from 'vscode';
 import { SqsTreeItem, TreeItemType } from './SqsTreeItem';
 import { SqsTreeView } from './SqsTreeView';
 import * as api from '../common/API';
+// Import the Message type from the appropriate module
+import type { Message } from "@aws-sdk/client-sqs";
 
 export class SqsTreeDataProvider implements vscode.TreeDataProvider<SqsTreeItem>
 {
@@ -64,6 +66,23 @@ export class SqsTreeDataProvider implements vscode.TreeDataProvider<SqsTreeItem>
 
 		let treeItem = this.NewSqsNode(Region, QueueArn);
 		this.SqsNodeList.push(treeItem);
+	}
+
+	AddNewReceivedMessageNode(Node:SqsTreeItem, Region:string, QueueArn:string, Message:Message){
+		let msgId = Message.MessageId ? Message.MessageId : "Undefined MessageId";
+		let receiptHandle = Message.ReceiptHandle ? Message.ReceiptHandle : "Undefined ReceiptHandle";
+		let body = Message.Body ? Message.Body : "Undefined Body";
+
+		let treeItem = new SqsTreeItem(msgId, TreeItemType.ReceivedMessage);
+		treeItem.Region = Region;
+		treeItem.QueueArn = QueueArn;
+		treeItem.MessageId = msgId;
+		treeItem.ReceiptHandle = receiptHandle;
+		treeItem.Body = body;
+		treeItem.Parent = Node;
+		Node.Children.push(treeItem);
+
+		this.Refresh();
 	}
 
 	RemoveSqsNode(Region:string, QueueArn:string){

@@ -13,6 +13,9 @@ export class SqsTreeItem extends vscode.TreeItem {
 	public IsHidden: boolean = false
 	public MessageFilePath: string | undefined
 	public IsRunning: boolean = false;
+	public MessageId: string | undefined;
+	public ReceiptHandle: string | undefined;
+	public Body: string | undefined;	
 
 	constructor(text:string, treeItemType:TreeItemType) {
 		super(text)
@@ -45,13 +48,18 @@ export class SqsTreeItem extends vscode.TreeItem {
 		}
 		else if(this.TreeItemType === TreeItemType.ReceiveGroup)
 		{
-			this.iconPath = new vscode.ThemeIcon('organization');
+			this.iconPath = new vscode.ThemeIcon('inbox');
 			this.contextValue = "ReceiveGroup"
 		}
 		else if(this.TreeItemType === TreeItemType.ReceivedMessage)
 		{
-			this.iconPath = new vscode.ThemeIcon('person');
+			this.iconPath = new vscode.ThemeIcon('mail');
 			this.contextValue = "ReceivedMessage"
+		}
+		else if(this.TreeItemType === TreeItemType.DeletedMessage)
+		{
+			this.iconPath = new vscode.ThemeIcon('mail-read');
+			this.contextValue = "DeletedMessage"
 		}
 		else if(this.TreeItemType === TreeItemType.Policy)
 		{
@@ -131,5 +139,6 @@ export enum TreeItemType{
 	DetailGroup = 7,
 	DetailItem = 8,
 	Policy = 9,
+	DeletedMessage = 10,
 	Other = 99
 }

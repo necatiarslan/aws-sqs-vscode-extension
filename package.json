@@ -1,8 +1,8 @@
 {
   "name": "aws-sqs-vscode-extension",
   "displayName": "Aws Sqs",
-  "description": "Manage & Monitor & Push Messages to Aws Sqs",
-  "version": "1.0.0",
+  "description": "Monitor Aws Sqs Queues, Send, Receive and Delete Messages",
+  "version": "1.0.1",
   "publisher": "NecatiARSLAN",
   "repository": {
     "type": "git",
@@ -18,7 +18,7 @@
   "keywords": [
     "AWS",
     "Sqs",
-    "Simple Notification Service"
+    "Simple Queue Service"
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
@@ -97,6 +97,16 @@
         "command": "SqsTreeView.ReceiveMessage",
         "title": "Receive Message",
         "icon": "$(arrow-down)"
+      },
+      {
+        "command": "SqsTreeView.PreviewMessage",
+        "title": "Preview Message",
+        "icon": "$(preview)"
+      },
+      {
+        "command": "SqsTreeView.DeleteMessage",
+        "title": "Delete Message",
+        "icon": "$(trash)"
       },
       {
         "command": "SqsTreeView.RemoveMessageFilePath",
@@ -222,6 +232,16 @@
         {
           "command": "SqsTreeView.ReceiveMessage",
           "when": "view == SqsTreeView && viewItem == ReceiveGroup",
+          "group": "inline"
+        },
+        {
+          "command": "SqsTreeView.PreviewMessage",
+          "when": "view == SqsTreeView && (viewItem == ReceivedMessage || viewItem == DeletedMessage)",
+          "group": "inline"
+        },
+        {
+          "command": "SqsTreeView.DeleteMessage",
+          "when": "view == SqsTreeView && viewItem == ReceivedMessage",
           "group": "inline"
         },
         {
