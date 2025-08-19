@@ -2,7 +2,7 @@
   "name": "aws-sqs-vscode-extension",
   "displayName": "Aws Sqs",
   "description": "Monitor Aws Sqs Queues, Send, Receive and Delete Messages",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "publisher": "NecatiARSLAN",
   "repository": {
     "type": "git",
@@ -97,6 +97,16 @@
         "command": "SqsTreeView.ReceiveMessage",
         "title": "Receive Message",
         "icon": "$(arrow-down)"
+      },
+      {
+        "command": "SqsTreeView.DeleteAllMessages",
+        "title": "Delete All Messages",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "SqsTreeView.GetMessageCount",
+        "title": "Get Message Count",
+        "icon": "$(info)"
       },
       {
         "command": "SqsTreeView.PreviewMessage",
@@ -231,6 +241,16 @@
         },
         {
           "command": "SqsTreeView.ReceiveMessage",
+          "when": "view == SqsTreeView && viewItem == ReceiveGroup",
+          "group": "inline"
+        },
+        {
+          "command": "SqsTreeView.DeleteAllMessages",
+          "when": "view == SqsTreeView && viewItem == ReceiveGroup",
+          "group": "inline"
+        },
+        {
+          "command": "SqsTreeView.GetMessageCount",
           "when": "view == SqsTreeView && viewItem == ReceiveGroup",
           "group": "inline"
         },

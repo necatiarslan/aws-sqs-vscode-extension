@@ -248,6 +248,52 @@ export async function DeleteMessage(
   }
 }
 
+export async function DeleteAllMessages(
+  Region: string,
+  QueueUrl: string,
+  MaxBatch: number = 10
+): Promise<MethodResult<number>> {
+  let result: MethodResult<number> = new MethodResult<number>();
+  let deletedCount = 0;
+  try {
+    const sqs = await GetSQSClient(Region);
+    while (true) {
+      // Receive up to MaxBatch messages
+      const receiveParams = {
+        QueueUrl,
+        MaxNumberOfMessages: MaxBatch,
+        WaitTimeSeconds: 0,
+      };
+      const receiveCommand = new ReceiveMessageCommand(receiveParams);
+      const receiveResponse = await sqs.send(receiveCommand);
+      const messages = receiveResponse.Messages || [];
+      if (messages.length === 0) {
+        break;
+      }
+      for (const msg of messages) {
+        if (msg.ReceiptHandle) {
+          const deleteParams = {
+            QueueUrl,
+            ReceiptHandle: msg.ReceiptHandle,
+          };
+          const deleteCommand = new DeleteMessageCommand(deleteParams);
+          await sqs.send(deleteCommand);
+          deletedCount++;
+        }
+      }
+    }
+    result.result = deletedCount;
+    result.isSuccessful = true;
+    return result;
+  } catch (error: any) {
+    result.isSuccessful = false;
+    result.error = error;
+    ui.showErrorMessage("api.DeleteAllMessages Error !!!", error);
+    ui.logToOutput("api.DeleteAllMessages Error !!!", error);
+    return result;
+  }
+}
+
 export async function GetQueuePolicy(
   region: string,
   queueUrl: string
@@ -268,6 +314,33 @@ export async function GetQueuePolicy(
     result.error = error;
     ui.showErrorMessage("api.GetQueuePolicy Error !!!", error);
     ui.logToOutput("api.GetQueuePolicy Error !!!", error);
+    return result;
+  }
+}
+
+export async function GetMessageCount(
+  Region: string,
+  QueueUrl: string
+): Promise<MethodResult<number>> {
+  let result: MethodResult<number> = new MethodResult<number>();
+  try {
+    const sqs = await GetSQSClient(Region);
+    const command = new GetQueueAttributesCommand({
+      QueueUrl,
+      AttributeNames: ["ApproximateNumberOfMessages"]
+    });
+    const response = await sqs.send(command);
+    const count = response.Attributes?.ApproximateNumberOfMessages
+      ? parseInt(response.Attributes.ApproximateNumberOfMessages, 10)
+      : 0;
+    result.result = count;
+    result.isSuccessful = true;
+    return result;
+  } catch (error: any) {
+    result.isSuccessful = false;
+    result.error = error;
+    ui.showErrorMessage("api.GetMessageCount Error !!!", error);
+    ui.logToOutput("api.GetMessageCount Error !!!", error);
     return result;
   }
 }

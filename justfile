@@ -28,6 +28,9 @@ npm-install:
     npm install
     npx tsc --noEmit
 
+start:
+    localstack start
+
 list-queues:
     aws --endpoint-url=http://localhost:4566 sqs list-queues
 

@@ -9,6 +9,8 @@
 - **Manage Messages**: Save and reuse messages for later use.
 - **Receive Messages**: Receive messages from Aws Sqs Queue.
 - **Delete Messages**: Delete messages from Aws Sqs Queue.
+- **Delete All Messages**: Delete all messages from Aws Sqs Queue.
+- **Get Message Count**: Get message count of a Aws Sqs Queue.
 - **AWS Profile Support**: Work with multiple AWS profiles seamlessly.  
 
 ## Sponsor Me

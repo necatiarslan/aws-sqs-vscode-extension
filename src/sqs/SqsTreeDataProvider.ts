@@ -147,7 +147,7 @@ export class SqsTreeDataProvider implements vscode.TreeDataProvider<SqsTreeItem>
 			}
 		}
 
-		let subItem = new SqsTreeItem("Received", TreeItemType.ReceiveGroup);
+		let subItem = new SqsTreeItem("Receive", TreeItemType.ReceiveGroup);
 		subItem.QueueArn = treeItem.QueueArn;
 		subItem.Region = treeItem.Region;
 		subItem.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;

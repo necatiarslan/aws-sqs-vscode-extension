@@ -80,6 +80,14 @@ export function activate(context: vscode.ExtensionContext) {
 		treeView.ReceiveMessage(node);
 	});
 
+	vscode.commands.registerCommand('SqsTreeView.DeleteAllMessages', (node: SqsTreeItem) => {
+		treeView.DeleteAllMessages(node);
+	});
+
+	vscode.commands.registerCommand('SqsTreeView.GetMessageCount', (node: SqsTreeItem) => {
+		treeView.GetMessageCount(node);
+	});
+
 	vscode.commands.registerCommand('SqsTreeView.PreviewMessage', (node: SqsTreeItem) => {
 		treeView.PreviewMessage(node);
 	});
