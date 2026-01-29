@@ -31,18 +31,18 @@ npm-install:
 start:
     localstack start
 
-list-queues:
+list:
     aws --endpoint-url=http://localhost:4566 sqs list-queues
 
-add-queue:
+add:
     aws --endpoint-url=http://localhost:4566 sqs create-queue --queue-name my-queue
 
-delete-queue:
+delete:
     aws --endpoint-url=http://localhost:4566 sqs delete-queue --queue-url http://localhost:4566/000000000000/my-queue
 
-send-message:
+send:
     aws --endpoint-url=http://localhost:4566 sqs send-message --queue-url http://localhost:4566/000000000000/my-queue --message-body "Hello World"  
 
-receive-message:
+receive:
     aws --endpoint-url=http://localhost:4566 sqs receive-message --queue-url http://localhost:4566/000000000000/my-queue
 
